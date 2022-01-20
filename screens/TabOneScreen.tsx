@@ -1,21 +1,18 @@
-import { Button, StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { StyleSheet, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import TimeTable from '../components/TimeTable'
 import { RootTabScreenProps } from '../types';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>minizzang</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Button
-        onPress={()=> {
-          alert("hihi");
-        }}
-        title = "눌러죠"/>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <Text style={styles.title}>김기영 트레이너님 주간 일정표</Text>
+      <TouchableOpacity style={styles.touch} onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.title}>Logout</Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+      <ScrollView>
+        <TimeTable />
+      </ScrollView>
     </View>
   );
 }
@@ -23,16 +20,25 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 6
+    
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 10,
     height: 1,
     width: '80%',
+  },
+  touch: {
+    width: '50%',
+    alignItems: 'center',
+    padding: 8,
+    backgroundColor:'#dddddd',
+    margin: 1
   },
 });
