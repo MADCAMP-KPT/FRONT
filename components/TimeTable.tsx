@@ -34,5 +34,5 @@ const styles = StyleSheet.create({
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },
     row: {  height: 45  },
-    text: { textAlign: 'center', fontSize: 20 }
+    text: { textAlign: 'center', fontSize: 15 }
   });

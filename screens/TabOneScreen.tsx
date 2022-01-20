@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   touch: {
-    width: '10%',
+    width: '50%',
     alignItems: 'center',
     padding: 8,
     backgroundColor:'#dddddd',

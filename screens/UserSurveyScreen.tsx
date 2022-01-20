@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView } from "react-native";
 import { useState } from 'react'
 import { RadioButton } from "react-native-paper";
 import { RootStackScreenProps } from "../types";
@@ -8,10 +8,9 @@ export default function UserSurveyScreen({navigation}: RootStackScreenProps<'Use
     const [sex, setSex] = useState('남')
 
     return(
-       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{fontSize: 50, fontWeight: 'bold', margin: 5}}>잠깐!</Text>
-            <Text style={{fontSize: 30, fontWeight: 'bold'}}>트레이너들이 볼 수 있도록 정보를 작성해주세요</Text>
-            <View style={{alignItems: 'center', justifyContent: 'center', borderRadius: 20, borderWidth: 3, margin: 50, padding: 20, }}>
+       <SafeAreaView style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>트레이너들이 볼 수 있도록 정보를 작성해주세요</Text>
+            <View style={{alignItems: 'center', justifyContent: 'center', borderRadius: 20, borderWidth: 3, margin: 10, padding: 10, }}>
                 <View style={styles.input}>
                     <Text style={styles.text}>이름</Text>
                     <TextInput style={styles.tinput} placeholder='name' />
@@ -41,7 +40,7 @@ export default function UserSurveyScreen({navigation}: RootStackScreenProps<'Use
                     <Text style={styles.text}>운동 목적</Text>
                     <TextInput style={styles.multiinput} placeholder=' 트레이너에게 하고싶은 말' multiline={true} />
                 </View>
-                <Text>작성해주신 정보를 토대로 알맞는 트레이너를 추천해 드립니다</Text>
+                <Text>작성해주신 정보를 토대로 알맞는 트레이너를 추천해 드립니다!</Text>
                 <View style={{flexDirection:'row'}}>
                     <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Signin')}> 
                         <Text>뒤로가기</Text> 
@@ -52,7 +51,7 @@ export default function UserSurveyScreen({navigation}: RootStackScreenProps<'Use
                 </View>
             </View>
             
-       </View> 
+       </SafeAreaView> 
     )
 };
 
@@ -68,20 +67,20 @@ const styles = StyleSheet.create({
     },
     input: {
         flexDirection: 'row',
-        margin: 15,
-        padding: 10,
+        margin: 10,
+        padding: 5,
         alignItems: 'center'
     },
     text: {
         textDecorationLine: 'underline',
-        fontSize: 20,
-        margin: 5
+        fontSize: 15,
+        margin: 3
     },
     tinput: {
         width: 200,
         borderWidth: 1,
         padding: 10,
-        fontSize: 20,
+        fontSize: 15,
         margin: 5,
         borderRadius: 10
     },

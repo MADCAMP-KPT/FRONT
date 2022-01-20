@@ -31,7 +31,7 @@ export default function SigninScreen({navigation}: RootStackScreenProps<'Signin'
 const styles = StyleSheet.create({
     view: {flex: 1, alignItems: 'center', justifyContent:'center'},
     text: {fontSize: 20},
-    title: {fontSize: 100, fontWeight: 'bold', marginBottom: 50},
+    title: {fontSize: 60, fontWeight: 'bold', marginBottom: 50},
     touch: {alignItems: 'center',
         padding: 10,
         backgroundColor:'#dddddd',

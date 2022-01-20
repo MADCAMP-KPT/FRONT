@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView } from "react-native";
 import { useState } from 'react'
 import { RadioButton } from "react-native-paper";
 import { RootStackScreenProps } from "../types";
@@ -8,13 +8,16 @@ export default function TrainerSurveyScreen({navigation}: RootStackScreenProps<'
     const [sex, setSex] = useState('남')
 
     return(
-       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{fontSize: 50, fontWeight: 'bold', margin: 5}}>잠깐!</Text>
-            <Text style={{fontSize: 30, fontWeight: 'bold'}}>회원님들이 볼 수 있도록 정보를 작성해주세요</Text>
-            <View style={{alignItems: 'center', justifyContent: 'center', borderRadius: 20, borderWidth: 3, margin: 50, padding: 20, }}>
+       <SafeAreaView style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>회원님들이 볼 수 있도록 정보를 작성해주세요</Text>
+            <View style={{alignItems: 'center', justifyContent: 'center', borderRadius: 20, borderWidth: 3, margin: 10, padding: 10, }}>
                 <View style={styles.input}>
                     <Text style={styles.text}>이름</Text>
                     <TextInput style={styles.tinput} placeholder='name' />
+                </View>
+                <View style={styles.input}>
+                    <Text style={styles.text}>지역</Text>
+                    <TextInput style={styles.tinput} placeholder='location' />
                 </View>
                 <View style={styles.input}>
                     <Text style={styles.text}>소속</Text>
@@ -48,7 +51,7 @@ export default function TrainerSurveyScreen({navigation}: RootStackScreenProps<'
                 </View>
             </View>
             
-       </View> 
+       </SafeAreaView> 
     )
 };
 
@@ -64,20 +67,20 @@ const styles = StyleSheet.create({
     },
     input: {
         flexDirection: 'row',
-        margin: 20,
-        padding: 10,
+        margin: 10,
+        padding: 5,
         alignItems: 'center'
     },
     text: {
         textDecorationLine: 'underline',
-        fontSize: 20,
+        fontSize: 15,
         margin: 5
     },
     tinput: {
         width: 200,
         borderWidth: 1,
         padding: 10,
-        fontSize: 20,
+        fontSize: 15,
         margin: 5,
         borderRadius: 10
     },

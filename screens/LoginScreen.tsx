@@ -6,7 +6,7 @@ import { RadioButton } from 'react-native-paper'
 export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
 
     const [checked, setChecked] = useState('User');
-
+    // 전체를 둥글게 감싸는 뷰 하나 추가해보기
     return(
         <View style={styles.view}>
             <Text style={styles.title}>김 PT</Text>
