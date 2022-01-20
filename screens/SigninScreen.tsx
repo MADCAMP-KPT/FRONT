@@ -21,7 +21,7 @@ export default function SigninScreen({navigation}: RootStackScreenProps<'Signin'
             <TextInput style={styles.input} placeholder='아이디' />
             <TextInput style={styles.input} placeholder='비밀번호' secureTextEntry={true} />
             <TextInput style={styles.input} placeholder='비밀번호 확인' secureTextEntry={true} />
-            <TouchableOpacity style={styles.touch} onPress={() => navigation.navigate('TrainerSurvey')}>
+            <TouchableOpacity style={styles.touch} onPress={() => (checked === 'User') ? navigation.navigate('UserSurvey') : navigation.navigate('TrainerSurvey')}>
                 <Text style={styles.text}>가입하기!</Text>
             </TouchableOpacity>
         </View>

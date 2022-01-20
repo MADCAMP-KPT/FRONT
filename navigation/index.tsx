@@ -19,6 +19,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import SigninScreen from '../screens/SigninScreen';
+import UserSurveyScreen from '../screens/UserSurveyScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -44,6 +45,7 @@ function RootNavigator() {
       <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false, title: 'Login Screen'}}/>
       <Stack.Screen name="Signin" component={SigninScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TrainerSurvey" component={TrainerSurveyScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="UserSurvey" component={UserSurveyScreen} options={{headerShown: false}} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
