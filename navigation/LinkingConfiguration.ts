@@ -31,7 +31,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           TabThree: {
             screens: {
-              TabTwoScreen: 'two',
+              TrainerMyPageScreen: 'two',
             },
           },
         },

@@ -18,11 +18,14 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import TrainerMyPageScreen from '../screens/TrainerMyPageScreen'
 import SigninScreen from '../screens/SigninScreen';
 import UserSurveyScreen from '../screens/UserSurveyScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import { UserTabParamList, UserTabScreenProps } from '../types'; // Tab types for users
 import LinkingConfiguration from './LinkingConfiguration';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -76,8 +79,8 @@ function BottomTabNavigator() {
         name="TabOne"
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Timetable',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          title: '시간표',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="timetable" size={24} color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Modal')}
@@ -98,16 +101,16 @@ function BottomTabNavigator() {
         name="TabTwo"
         component={TabTwoScreen}
         options={{
-          title: 'HiHi',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: '회원관리',
+          tabBarIcon: ({ color }) => <Feather name="users" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="TabThree"
-        component={TabTwoScreen}
+        component={TrainerMyPageScreen}
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: '마이페이지',
+          tabBarIcon: ({ color }) => <Feather name="info" size={24} color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -151,16 +154,16 @@ function UserBottomTabNavigator() {
         name="UserTabTwo"
         component={TabTwoScreen}
         options={{
-          title: 'HiHi',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: '회원관리',
+          tabBarIcon: ({ color }) => <Feather name="users" size={24} color={color} />,
         }}
       />
       <UserBottomTab.Screen
         name="UserTabThree"
         component={TabTwoScreen}
         options={{
-          title: 'HiHi',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: '내 정보',
+          tabBarIcon: ({ color }) => <Feather name="info" size={24} color={color} />,
         }}
       />
     </UserBottomTab.Navigator>
