@@ -19,7 +19,9 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import SigninScreen from '../screens/SigninScreen';
+import UserSurveyScreen from '../screens/UserSurveyScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { UserTabParamList, UserTabScreenProps } from '../types'; // Tab types for users
 import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -44,7 +46,9 @@ function RootNavigator() {
       <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false, title: 'Login Screen'}}/>
       <Stack.Screen name="Signin" component={SigninScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TrainerSurvey" component={TrainerSurveyScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="UserSurvey" component={UserSurveyScreen} options={{headerShown: false}} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="UserRoot" component={UserBottomTabNavigator} options={{headerShown: false}} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -99,6 +103,59 @@ function BottomTabNavigator() {
         }}
       />
     </BottomTab.Navigator>
+  );
+}
+
+const UserBottomTab = createBottomTabNavigator<UserTabParamList>();
+
+function UserBottomTabNavigator() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <UserBottomTab.Navigator
+      initialRouteName="UserTabOne"
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme].tint,
+      }}>
+      <UserBottomTab.Screen
+        name="UserTabOne"
+        component={TabTwoScreen}
+        options={({ navigation }: UserTabScreenProps<'UserTabOne'>) => ({
+          title: 'Timetable',
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Modal')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <FontAwesome
+                name="info-circle"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
+      />
+      <UserBottomTab.Screen
+        name="UserTabTwo"
+        component={TabTwoScreen}
+        options={{
+          title: 'HiHi',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <UserBottomTab.Screen
+        name="UserTabThree"
+        component={TabTwoScreen}
+        options={{
+          title: 'HiHi',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+    </UserBottomTab.Navigator>
   );
 }
 

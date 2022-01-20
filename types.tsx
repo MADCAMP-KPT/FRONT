@@ -17,7 +17,9 @@ export type RootStackParamList = {
   Login: undefined;
   Signin: undefined;
   TrainerSurvey: undefined;
+  UserSurvey: undefined;
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
+  UserRoot: NavigatorScreenParams<UserTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
 };
@@ -32,7 +34,18 @@ export type RootTabParamList = {
   TabTwo: undefined;
 };
 
+export type UserTabParamList = {
+  UserTabOne: undefined;
+  UserTabTwo: undefined;
+  UserTabThree: undefined;
+}
+
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, Screen>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type UserTabScreenProps<Screen extends keyof UserTabParamList> = CompositeScreenProps<
+  BottomTabScreenProps<UserTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
 >;

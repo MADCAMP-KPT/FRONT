@@ -6,7 +6,7 @@ import { RadioButton } from 'react-native-paper'
 export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
 
     const [checked, setChecked] = useState('User');
-
+    // 전체를 둥글게 감싸는 뷰 하나 추가해보기
     return(
         <View style={styles.view}>
             <Text style={styles.title}>김 PT</Text>
@@ -20,7 +20,7 @@ export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>)
             </View>
             <TextInput style={styles.input} placeholder='id' />
             <TextInput style={styles.input} placeholder='password' secureTextEntry={true} />
-            <TouchableOpacity style={styles.touch} onPress={() => navigation.navigate('Root')}>
+            <TouchableOpacity style={styles.touch} onPress={() => (checked === 'User') ? navigation.navigate('UserRoot') : navigation.navigate('Root')}>
                 <Text style={styles.text}>로그인</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
