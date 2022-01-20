@@ -5,11 +5,15 @@ import {Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component'
 export default function TimeTable() {
 
     const tableHead: Array<String> = ['' ,'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    const tableTitle: Array<String> = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+    const tableTitle: Array<String> = ['06', '07', '08', '09', '10', '11', '12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10']
                                         .map((item, index) => {
-                                            return item + ':00 PM'
+                                            if(index <= 5) {
+                                                return item + ':00 AM'
+                                            } else {
+                                                return item + ':00 PM'
+                                            } 
                                         })
-    const tableData: Array<any> = Array(tableTitle.length).fill(Array(tableHead.length - 1).fill('123123'))
+    const tableData: Array<any> = Array(tableTitle.length).fill(Array(tableHead.length - 1).fill(''))
 
     return( 
         <View style={styles.container}>
@@ -25,10 +29,10 @@ export default function TimeTable() {
 }
 
 const styles = StyleSheet.create({
-    container: { width:1000 , padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-    head: { height: 40,  backgroundColor: '#f1f8ff'  },
+    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+    head: { height: 50,  backgroundColor: '#f1f8ff'  },
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },
-    row: {  height: 28  },
-    text: { textAlign: 'center' }
+    row: {  height: 45  },
+    text: { textAlign: 'center', fontSize: 20 }
   });

@@ -1,16 +1,19 @@
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
+import { StyleSheet, ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import TimeTable from '../components/TimeTable'
-import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Time Table!</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <TimeTable />
+      <Text style={styles.title}>Hello, trainer Park!</Text>
+      <Text style={styles.title}>Weekly timetable</Text>
+      <TouchableOpacity style={styles.touch} onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.title}>Logout</Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+      <ScrollView>
+        <TimeTable />
+      </ScrollView>
     </View>
   );
 }
@@ -18,16 +21,23 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 6
+    
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 20,
     height: 1,
     width: '80%',
+  },
+  touch: {alignItems: 'center',
+    padding: 10,
+    backgroundColor:'#dddddd',
+    margin: 50
   },
 });
