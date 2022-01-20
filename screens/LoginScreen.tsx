@@ -20,7 +20,7 @@ export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>)
             </View>
             <TextInput style={styles.input} placeholder='id' />
             <TextInput style={styles.input} placeholder='password' secureTextEntry={true} />
-            <TouchableOpacity style={styles.touch} onPress={() => navigation.navigate('Root')}>
+            <TouchableOpacity style={styles.touch} onPress={() => (checked === 'User') ? navigation.navigate('UserRoot') : navigation.navigate('Root')}>
                 <Text style={styles.text}>로그인</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Signin')}>

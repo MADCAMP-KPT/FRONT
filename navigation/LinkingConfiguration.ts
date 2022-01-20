@@ -31,6 +31,25 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
+      UserRoot: {
+        screens: {
+          UserTabOne: {
+            screens: {
+              TabTwoScreen: 'userone',
+            },
+          },
+          UserTabTwo: {
+            screens: {
+              TabTwoScreen: 'usertwo',
+            },
+          },
+          UserTabThree: {
+            screens: {
+              TabTwoScreen: 'userthree',
+            },
+          },
+        },
+      },
       Modal: 'modal',
       NotFound: '*',
     },

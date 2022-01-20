@@ -45,7 +45,7 @@ export default function UserSurveyScreen({navigation}: RootStackScreenProps<'Use
                     <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Signin')}> 
                         <Text>뒤로가기</Text> 
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Root')}>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UserRoot')}>
                         <Text>작성 완료!</Text>    
                     </TouchableOpacity> 
                 </View>
