@@ -13,10 +13,12 @@ import { ColorSchemeName, Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import LoginScreen from '../screens/LoginScreen'
+import TrainerSurveyScreen from '../screens/TrainerSurveyScreen'
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import SigninScreen from '../screens/SigninScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -39,7 +41,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: true, title: 'Login Screen'}}/>
+      <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false, title: 'Login Screen'}}/>
+      <Stack.Screen name="Signin" component={SigninScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="TrainerSurvey" component={TrainerSurveyScreen} options={{headerShown: false}}/>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>

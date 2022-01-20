@@ -5,8 +5,7 @@ import { RootTabScreenProps } from '../types';
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello, trainer Park!</Text>
-      <Text style={styles.title}>Weekly timetable</Text>
+      <Text style={styles.title}>김기영 트레이너님 주간 일정표</Text>
       <TouchableOpacity style={styles.touch} onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.title}>Logout</Text>
       </TouchableOpacity>
@@ -24,20 +23,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
     margin: 6
     
   },
   separator: {
-    marginVertical: 20,
+    marginVertical: 10,
     height: 1,
     width: '80%',
   },
-  touch: {alignItems: 'center',
-    padding: 10,
+  touch: {
+    width: '10%',
+    alignItems: 'center',
+    padding: 8,
     backgroundColor:'#dddddd',
-    margin: 50
+    margin: 1
   },
 });
