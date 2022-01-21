@@ -6,15 +6,18 @@ import PTMemoItem from '../components/PTMemoItem';
 import { AntDesign, Ionicons  } from '@expo/vector-icons';
 import Modal from 'react-native-simple-modal';
 import { Calendar } from 'react-native-calendars';
+import { RootStackScreenProps } from '../types';
+import { useNavigation } from '@react-navigation/native';
 
 // import { Text, View } from '../components/Themed';
 
-export default function TabTwoScreen() {
+export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>) {
 
+  let userId = route.params.userId  // MyUserListItem에서 navigate될 때 파라미터로 받은 유저 id
   let userName = "박승민"
   let userSex = "M"
   let userMobile = "010-9999-2222"
-  let userPurpose = "다이어트!"
+  let userPurpose = "다이어트"
   
   const [modalOpen, setModalOpen] = useState(false)
   const [dateModalOpen, setDateModalOpen] = useState(false)

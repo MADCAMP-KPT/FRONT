@@ -17,9 +17,12 @@ import TrainerSurveyScreen from '../screens/TrainerSurveyScreen'
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import UserDetailScreen from '../screens/TrainerUserDetailScreen';
+import TrainerMyUserScreen from '../screens/TrainerMyUserScreen';
 import SigninScreen from '../screens/SigninScreen';
 import UserSurveyScreen from '../screens/UserSurveyScreen';
+import UserCommunityScreen from '../screens/UserCommunityScreen';
+import UserCommunityDetailScreen from '../screens/UserCommunityDetailScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import { UserTabParamList, UserTabScreenProps } from '../types'; // Tab types for users
 import LinkingConfiguration from './LinkingConfiguration';
@@ -50,6 +53,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="UserRoot" component={UserBottomTabNavigator} options={{headerShown: false}} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="UserDetail" component={UserDetailScreen} options={{headerShown: false}}/>
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
@@ -96,7 +100,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TabTwo"
-        component={TabTwoScreen}
+        component={TrainerMyUserScreen}
         options={{
           title: 'HiHi',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -104,7 +108,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TabThree"
-        component={TabTwoScreen}
+        component={TabOneScreen}
         options={{
           title: 'Tab Two',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -127,7 +131,7 @@ function UserBottomTabNavigator() {
       }}>
       <UserBottomTab.Screen
         name="UserTabOne"
-        component={TabTwoScreen}
+        component={UserCommunityDetailScreen}
         options={({ navigation }: UserTabScreenProps<'UserTabOne'>) => ({
           title: 'Timetable',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
@@ -149,7 +153,7 @@ function UserBottomTabNavigator() {
       />
       <UserBottomTab.Screen
         name="UserTabTwo"
-        component={TabTwoScreen}
+        component={TabOneScreen}
         options={{
           title: 'HiHi',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -157,7 +161,7 @@ function UserBottomTabNavigator() {
       />
       <UserBottomTab.Screen
         name="UserTabThree"
-        component={TabTwoScreen}
+        component={TabOneScreen}
         options={{
           title: 'HiHi',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
