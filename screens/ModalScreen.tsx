@@ -1,18 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { StyleSheet, Text, TouchableOpacity, View  } from 'react-native';
 
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/ModalScreen.tsx" />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <Text style={styles.title}>로그아웃 하시겠습니까?</Text>
+      <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={styles.btn}>
+              <Text>아니오</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn}>
+              <Text>네</Text>
+          </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -22,9 +21,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 20,
+    margin: 0,
+    padding: 10,
   },
   title: {
-    fontSize: 20,
+    flex: 1,
+    fontSize: 25,
     fontWeight: 'bold',
   },
   separator: {
@@ -32,4 +35,12 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  btn: {
+    flex: 1,
+    backgroundColor: '#dddddd',
+    alignItems: 'center',
+    margin: 10,
+    padding: 10,
+    fontSize: 20,
+  }
 });

@@ -18,11 +18,17 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import TrainerMyPageScreen from '../screens/TrainerMyPageScreen'
 import SigninScreen from '../screens/SigninScreen';
 import UserSurveyScreen from '../screens/UserSurveyScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import NoonBodyScreen from '../screens/NoonBodyScreen';
+import InBodyScreen from '../screens/InBodyScreen';
+import { GalleryTabParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import { UserTabParamList, UserTabScreenProps } from '../types'; // Tab types for users
 import LinkingConfiguration from './LinkingConfiguration';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -51,7 +57,7 @@ function RootNavigator() {
       <Stack.Screen name="UserRoot" component={UserBottomTabNavigator} options={{headerShown: false}} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Modal" component={ModalScreen} options={{headerShown: false, contentStyle:{height: '20%'}}} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -75,39 +81,28 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabOne"
         component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Timetable',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
+        options={{
+          headerShown: false,
+          title: '시간표',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="timetable" size={24} color={color} />,
+        }}
       />
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoScreen}
         options={{
-          title: 'HiHi',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
+          title: '회원관리',
+          tabBarIcon: ({ color }) => <Feather name="users" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="TabThree"
-        component={TabTwoScreen}
+        component={TrainerMyPageScreen}
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
+          title: '마이페이지',
+          tabBarIcon: ({ color }) => <Feather name="info" size={24} color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -128,43 +123,54 @@ function UserBottomTabNavigator() {
       <UserBottomTab.Screen
         name="UserTabOne"
         component={TabTwoScreen}
-        options={({ navigation }: UserTabScreenProps<'UserTabOne'>) => ({
+        options={{
           title: 'Timetable',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
+        }}
       />
       <UserBottomTab.Screen
         name="UserTabTwo"
-        component={TabTwoScreen}
+        component={GalleryTopTabNavigator}
         options={{
-          title: 'HiHi',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
+          title: '회원관리',
+          tabBarIcon: ({ color }) => <Feather name="users" size={24} color={color} />,
         }}
       />
       <UserBottomTab.Screen
         name="UserTabThree"
         component={TabTwoScreen}
         options={{
-          title: 'HiHi',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
+          title: '내 정보',
+          tabBarIcon: ({ color }) => <Feather name="info" size={24} color={color} />,
         }}
       />
     </UserBottomTab.Navigator>
   );
+}
+
+const BodyTab = createMaterialTopTabNavigator<GalleryTabParamList>();
+
+function GalleryTopTabNavigator() {
+  return(
+    <BodyTab.Navigator initialRouteName="InBody"
+      screenOptions ={{
+        tabBarLabelStyle: {fontSize: 15},
+        tabBarStyle: { height: 50, marginTop: 30 } // Iphone with notch will shadowing this tab 
+      }}
+    >
+      <BodyTab.Screen
+        name = "InBody"
+        component = {InBodyScreen}
+       />
+      <BodyTab.Screen 
+        name = "NoonBody"
+        component = {NoonBodyScreen}
+      />
+    </BodyTab.Navigator>
+  )
 }
 
 /**

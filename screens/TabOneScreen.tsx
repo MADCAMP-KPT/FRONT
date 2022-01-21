@@ -6,9 +6,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   return (
     <View style={styles.container}>
       <Text style={styles.title}>김기영 트레이너님 주간 일정표</Text>
-      <TouchableOpacity style={styles.touch} onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.title}>Logout</Text>
-      </TouchableOpacity>
       <View style={styles.separator} />
       <ScrollView>
         <TimeTable />
@@ -33,12 +30,5 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     height: 1,
     width: '80%',
-  },
-  touch: {
-    width: '50%',
-    alignItems: 'center',
-    padding: 8,
-    backgroundColor:'#dddddd',
-    margin: 1
   },
 });
