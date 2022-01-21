@@ -4,6 +4,7 @@
  */
 
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -37,9 +38,19 @@ export type RootTabParamList = {
 
 export type UserTabParamList = {
   UserTabOne: undefined;
-  UserTabTwo: undefined;
+  UserTabTwo: NavigatorScreenParams<GalleryTabParamList> | undefined;
   UserTabThree: undefined;
 }
+
+export type GalleryTabParamList = {
+  InBody: undefined;
+  NoonBody : undefined;
+}
+
+export type GalleryTabScreenProps<Screen extends keyof GalleryTabParamList> = CompositeScreenProps<
+  MaterialTopTabScreenProps<GalleryTabParamList, Screen>,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, Screen>,

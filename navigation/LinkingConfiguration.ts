@@ -45,7 +45,16 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           UserTabTwo: {
             screens: {
-              TabTwoScreen: 'usertwo',
+              InBody: {
+                screens: {
+                  InBodyScreen: 'inbody',
+                }
+              },
+              NoonBody: {
+                screens: {
+                  NoonBodyScreen: 'noonbody',
+                }
+              },
             },
           },
           UserTabThree: {
