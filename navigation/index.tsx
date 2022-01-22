@@ -17,13 +17,16 @@ import TrainerSurveyScreen from '../screens/TrainerSurveyScreen'
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
 import TrainerMyPageScreen from '../screens/TrainerMyPageScreen'
-import SigninScreen from '../screens/SigninScreen';
-import UserSurveyScreen from '../screens/UserSurveyScreen';
 import NoonBodyScreen from '../screens/NoonBodyScreen';
 import InBodyScreen from '../screens/InBodyScreen';
 import { GalleryTabParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import UserDetailScreen from '../screens/TrainerUserDetailScreen';
+import TrainerMyUserScreen from '../screens/TrainerMyUserScreen';
+import SigninScreen from '../screens/SigninScreen';
+import UserSurveyScreen from '../screens/UserSurveyScreen';
+import UserCommunityScreen from '../screens/UserCommunityScreen';
+import UserCommunityDetailScreen from '../screens/UserCommunityDetailScreen';
 import { UserTabParamList, UserTabScreenProps } from '../types'; // Tab types for users
 import LinkingConfiguration from './LinkingConfiguration';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -56,6 +59,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="UserRoot" component={UserBottomTabNavigator} options={{headerShown: false}} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="UserDetail" component={UserDetailScreen} options={{headerShown: false}}/>
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} options={{headerShown: false, contentStyle:{height: '20%'}}} />
       </Stack.Group>
@@ -89,7 +93,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TabTwo"
-        component={TabTwoScreen}
+        component={TrainerMyUserScreen}
         options={{
           headerShown: false,
           title: '회원관리',
@@ -122,8 +126,8 @@ function UserBottomTabNavigator() {
       }}>
       <UserBottomTab.Screen
         name="UserTabOne"
-        component={TabTwoScreen}
-        options={{
+        component={UserCommunityDetailScreen}
+        options={({ navigation }: UserTabScreenProps<'UserTabOne'>) => ({
           title: 'Timetable',
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
@@ -140,7 +144,7 @@ function UserBottomTabNavigator() {
       />
       <UserBottomTab.Screen
         name="UserTabThree"
-        component={TabTwoScreen}
+        component={TabOneScreen}
         options={{
           headerShown: false,
           title: '내 정보',

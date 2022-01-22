@@ -17,6 +17,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       Signin: 'signin',
       TrainerSurvey: 'trainersurvey',
       UserSurvey: 'usersurvey',
+      UserDetail: 'userdetail',
       Root: {
         screens: {
           TabOne: {
@@ -26,7 +27,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           TabTwo: {
             screens: {
-              TabTwoScreen: 'two',
+              TrainerMyUserScreen: 'two',
             },
           },
           TabThree: {
