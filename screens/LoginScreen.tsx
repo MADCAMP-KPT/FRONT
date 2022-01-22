@@ -1,11 +1,38 @@
-import { Text, TouchableOpacity, View, StyleSheet, TextInput} from 'react-native'
+import { Text, TouchableOpacity, View, StyleSheet, TextInput, Alert} from 'react-native'
 import { useState } from 'react'
 import { RootStackScreenProps } from '../types'
 import { RadioButton } from 'react-native-paper'
+import axios from 'axios'
 
 export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
 
   const [checked, setChecked] = useState('User');
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
+
+
+  // (checked === 'User') ? navigation.navigate('UserRoot') : navigation.navigate('Root')
+  const onLogin = () => {
+    let json = {"login_id": id, "login_pw": pw}
+    if(checked === 'User') {
+      axios.post('http://192.249.18.145:443/users/login', json).then((res) => {
+        if(res.data.result.length == 0) {
+          alert('존재하지 않는 회원입니다.')
+        } else {
+          navigation.navigate('UserRoot')
+        }
+      })
+    } else {
+      axios.post('http://192.249.18.145:443/trainers/login', json).then((res) => {
+        console.log(res.data);
+        if(res.data.result.length == 0) {
+          alert('존재하지 않는 회원입니다.')
+        } else {
+          navigation.navigate('Root')
+        }
+      })
+    }
+  }
   // 전체를 둥글게 감싸는 뷰 하나 추가해보기
   return(
     <View style={styles.view}>
@@ -18,9 +45,9 @@ export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>)
           </View>
         </RadioButton.Group>
       </View>
-      <TextInput style={styles.input} placeholder='id' />
-      <TextInput style={styles.input} placeholder='password' secureTextEntry={true} />
-      <TouchableOpacity style={styles.touch} onPress={() => (checked === 'User') ? navigation.navigate('UserRoot') : navigation.navigate('Root')}>
+      <TextInput style={styles.input} placeholder='id' value={id} onChangeText={setId} autoCapitalize='none'/>
+      <TextInput style={styles.input} placeholder='password' secureTextEntry={true} value={pw} onChangeText={setPw} autoCapitalize='none' />
+      <TouchableOpacity style={styles.touch} onPress={onLogin}>
         <Text style={styles.text}>로그인</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('Signin')}>

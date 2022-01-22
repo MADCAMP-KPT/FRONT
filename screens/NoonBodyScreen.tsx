@@ -1,37 +1,24 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import GalleryList from "../components/GalleryList";
 
 export default function NoonBodyScreen() {
-  const ImageData : Array<any> = Array(10).fill('../assets/images/momzzang.jpg');
+  const ImageData : Array<any> = Array(10).fill('https://reactnative.dev/img/tiny_logo.png');
 
 
   return(
-    <View style={{flex: 1}}>
-      <Text style={{fontSize: 40, textAlign: 'center', margin: 20}}>김기영의 인바디 갤러리</Text>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={{fontSize: 40, textAlign: 'center', margin: 20}}>김기영의 인바디 갤러리</Text>
+        <TouchableOpacity style={{alignSelf: 'center'}}>
+          <AntDesign name="pluscircle" size={48} color="black" />
+        </TouchableOpacity>
+      </View>
       <ScrollView>
-        <View style={styles.container}>
-          <Text>2021.01.01</Text>
-          <ScrollView horizontal={true}>
-            {ImageData.map((item, index) => {
-              return (
-                <TouchableOpacity key={index}>
-                  <Image style={styles.tinyLogo} source={require('../assets/images/momzzang.jpg')} />
-                </TouchableOpacity>
-              )
-            })} 
-          </ScrollView>
-        </View>
-        <View style={styles.container}>
-          <Text>2021.01.02</Text>
-          <ScrollView horizontal={true}>
-            {ImageData.map((item, index) => {
-              return (
-                <TouchableOpacity key={index}>
-                  <Image style={styles.tinyLogo} source={require('../assets/images/momzzang.jpg')} />
-                </TouchableOpacity>
-              )
-            })} 
-          </ScrollView>
-        </View>          
+        <GalleryList imageData={ImageData} />
+        <GalleryList imageData={ImageData} />
+        <GalleryList imageData={ImageData} />
+        <GalleryList imageData={ImageData} />
       </ScrollView>
     </View>
   )

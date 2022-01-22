@@ -31,6 +31,7 @@ import { UserTabParamList, UserTabScreenProps } from '../types'; // Tab types fo
 import LinkingConfiguration from './LinkingConfiguration';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import UserMyPageScreen from '../screens/UserMyPageScreen';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -131,7 +132,7 @@ function UserBottomTabNavigator() {
           title: 'Timetable',
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
+        })}
       />
       <UserBottomTab.Screen
         name="UserTabTwo"
@@ -144,7 +145,7 @@ function UserBottomTabNavigator() {
       />
       <UserBottomTab.Screen
         name="UserTabThree"
-        component={TabOneScreen}
+        component={UserMyPageScreen}
         options={{
           headerShown: false,
           title: '내 정보',
