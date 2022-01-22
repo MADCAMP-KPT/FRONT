@@ -6,14 +6,18 @@ import { useState } from "react";
 
 export default function InBodyScreen() {
 
-  const ImageData : Array<String> = Array(10).fill('https://reactnative.dev/img/tiny_logo.png');
-
   // Getting Image Data (array of uri's) then sort by date, create gallery lists.
   // Photo data : {uri: uri, date: date}
   // Sort by date
 
   const [pickedImagePath, setPickedImagePath] = useState('');
   const [testData, setTestData] = useState<String[]>([])
+  const [date, setDate] = useState<String[]>([])
+  // Date : String[] object 만들기
+  function parseDate(date: string): string {
+      let arr = date.split(' ')[0].split(':') 
+      return `${arr[0]}.${arr[1]}.${arr[2]}`
+  }
 
   const showImagePicker = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -23,13 +27,14 @@ export default function InBodyScreen() {
       return;
     }
   
-    const result = await ImagePicker.launchImageLibraryAsync();
-  
-    console.log(result);
+    const result = await ImagePicker.launchImageLibraryAsync({exif: true});
+    // exif.DateTimeOriginal -> "2022:01:21 18:48:22"
+    console.log(result)
   
     if(!result.cancelled) {
       setPickedImagePath(result.uri);
       setTestData([...testData, result.uri])
+      setDate([...date, parseDate(result.exif?.DateTimeOriginal)])
       console.log(result.uri);
       console.log(testData);
     }
@@ -44,7 +49,9 @@ export default function InBodyScreen() {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        <GalleryList imageData={testData} />           
+        {date.map((dates, i) => {
+          return <GalleryList key={i} imageData={[pickedImagePath]} date={dates} />    
+        })}       
       </ScrollView>
     </View>
   )

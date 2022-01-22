@@ -7,8 +7,8 @@ import axios from 'axios'
 export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
 
   const [checked, setChecked] = useState('User');
-  const [id, setId] = useState('');
-  const [pw, setPw] = useState('');
+  const [id, setId] = useState('test');
+  const [pw, setPw] = useState('test');
 
 
   // (checked === 'User') ? navigation.navigate('UserRoot') : navigation.navigate('Root')

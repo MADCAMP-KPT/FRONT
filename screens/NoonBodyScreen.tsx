@@ -9,7 +9,7 @@ export default function NoonBodyScreen() {
   return(
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <View style={{flexDirection: 'row'}}>
-        <Text style={{fontSize: 40, textAlign: 'center', margin: 20}}>김기영의 인바디 갤러리</Text>
+        <Text style={{fontSize: 32, fontWeight: 'bold', textAlign: 'center', margin: 20}}>김기영의눈눈바디 갤러리</Text>
         <TouchableOpacity style={{alignSelf: 'center'}}>
           <AntDesign name="pluscircle" size={48} color="black" />
         </TouchableOpacity>
