@@ -131,7 +131,7 @@ function UserBottomTabNavigator() {
           title: 'Timetable',
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
+        })}
       />
       <UserBottomTab.Screen
         name="UserTabTwo"
