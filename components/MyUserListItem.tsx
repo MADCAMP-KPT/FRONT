@@ -2,9 +2,13 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { RootTabScreenProps } from '../types';
 
-export default function MyUserListItem({userId, userName}:{
-  userId : number,
+export default function MyUserListItem({classId, userId, userName, day, time, remainingPT}:{
+  classId: number,
+  userId: number,
   userName : String,
+  day : String,
+  time: number,
+  remainingPT: number,
 }) {
 
   const navigation = useNavigation()
@@ -12,7 +16,8 @@ export default function MyUserListItem({userId, userName}:{
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={()=>navigation.navigate('UserDetail', {userId: userId})}>
+      onPress={()=>navigation.navigate('UserDetail', 
+        {classId: classId, userId: userId, day: day, time: time, remainingPT: remainingPT})}>
       <Text style={styles.userName}>{userName}</Text>
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.btnReject}>
