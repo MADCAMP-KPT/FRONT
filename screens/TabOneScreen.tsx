@@ -10,7 +10,7 @@ import BASE_URL from '../components/BASE_URL';
 
 export default function TabOneScreen() {
   const [name, setName] = useState('')
-  const [teach, setTeach] = useState<Object[]>([])
+  const [teach, setTeach] = useState<{day: string, hour: number, userId: string}[]>([])
 
   useEffect(() => {
     getIdandUpdate()
@@ -23,8 +23,12 @@ export default function TabOneScreen() {
         axios.get(`${BASE_URL}/trainers/${value}`).then((res) => {
           setName(res.data.result[0].name)
           axios.get(`${BASE_URL}/trainers/${value}/class/teaching`).then((res) => {
-            setTeach(res.data.result)
-            console.log(teach);
+            let sch: {day: string, hour: number, userId: string}[]  = []
+            for(var i = 0; i < res.data.result.length ; i ++) { 
+              sch.push({"day": res.data.result[i].day, "hour": res.data.result[i].time, "userId": res.data.result[i].name})
+            }
+            setTeach(sch)
+            console.log(sch);
           })
         }).catch((err) => console.log(err))
       }
@@ -36,7 +40,7 @@ export default function TabOneScreen() {
       <Text style={styles.title}>{name} 트레이너님 주간 일정표</Text>
       <View style={styles.separator} />
       <ScrollView>
-        <TimeTable />
+        <TimeTable teach={teach}/>
       </ScrollView>
     </SafeAreaView>
   );
