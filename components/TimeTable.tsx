@@ -4,7 +4,7 @@ import {Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component'
 
 export default function TimeTable() {
 
-  const tableHead: Array<String> = ['' ,'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  const tableHead: Array<String> = ['' ,'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
   const tableTitle: Array<String> = ['06', '07', '08', '09', '10', '11', '12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10']
                     .map((item, index) => {
                       if(index <= 5) {
@@ -29,7 +29,10 @@ export default function TimeTable() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent'
+  },
   head: { height: 50,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },

@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { RootStackScreenProps } from "../types";
 import { RadioButton } from "react-native-paper";
 import { useState } from 'react'
@@ -43,41 +43,60 @@ export default function SigninScreen({navigation}: RootStackScreenProps<'Signin'
   }
 
   return(
-    <View style={styles.view}>
-      <Text style={styles.title}>김 PT 회원가입</Text>
-      <View>
-        <RadioButton.Group onValueChange={newValue => setChecked(newValue)} value={checked}>
-          <View style={{flexDirection: 'row'}}>
-            <RadioButton.Item style={styles.radio} label="회원 전용" value="User" color={'black'}/>
-            <RadioButton.Item style={styles.radio} label="트레이너 전용" value="Trainer" color={'black'}/>
-          </View>
-        </RadioButton.Group>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.view}>
+        <Text style={styles.title}>김 PT 회원가입</Text>
+        <View>
+          <RadioButton.Group onValueChange={newValue => setChecked(newValue)} value={checked}>
+            <View style={{flexDirection: 'row'}}>
+              <RadioButton.Item style={styles.radio} label="회원 전용" value="User" color={'black'}/>
+              <RadioButton.Item style={styles.radio} label="트레이너 전용" value="Trainer" color={'black'}/>
+            </View>
+          </RadioButton.Group>
+        </View>
+        <KeyboardAvoidingView behavior='padding' style={{width: '100%', alignItems:'center'}}>
+          <TextInput style={styles.input} placeholder='아이디' value={id} onChangeText={setId} autoCapitalize='none' />
+          <TextInput style={styles.input} placeholder='비밀번호' secureTextEntry={true} value={pw} onChangeText={setPw} autoCapitalize='none'/>
+          <TextInput style={styles.input} placeholder='비밀번호 확인' secureTextEntry={true} value={chkpw} onChangeText={setChkPw} autoCapitalize='none' />
+          <TouchableOpacity style={styles.touch} onPress={onSign}>
+            <Text style={styles.text}>가입하기</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+        
       </View>
-      <TextInput style={styles.input} placeholder='아이디' value={id} onChangeText={setId} autoCapitalize='none' />
-      <TextInput style={styles.input} placeholder='비밀번호' secureTextEntry={true} value={pw} onChangeText={setPw} autoCapitalize='none'/>
-      <TextInput style={styles.input} placeholder='비밀번호 확인' secureTextEntry={true} value={chkpw} onChangeText={setChkPw} autoCapitalize='none' />
-      <TouchableOpacity style={styles.touch} onPress={onSign}>
-        <Text style={styles.text}>가입하기!</Text>
-      </TouchableOpacity>
-    </View>
+    </TouchableWithoutFeedback>
+    
   )
 }
 
 const styles = StyleSheet.create({
   view: {flex: 1, alignItems: 'center', justifyContent:'center'},
-  text: {fontSize: 20},
-  title: {fontSize: 60, fontWeight: 'bold', marginBottom: 50},
-  touch: {alignItems: 'center',
+  text: {
+    fontSize: 16,
+  },
+  title: {
+    fontSize: 50,
+    fontWeight: 'bold',
+    marginBottom: 50
+  },
+  touch: {
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
-    backgroundColor:'#dddddd',
-    margin: 10
+    backgroundColor:'skyblue',
+    margin: 10,
+    borderRadius: 30,
+    width: 110,
+    height: 50,
   },
   input: {
-    height: 40,
-    width: 200,
-    margin: 10,
+    height: 50,
+    width: '70%',
+    marginBottom: 10,
     borderWidth: 1,
     padding: 10,
-    },
+    borderRadius: 10,
+    borderColor: '#dddddd'
+  },
   radio: {backgroundColor: "#dddddd", margin: 10, borderRadius: 20},
 })

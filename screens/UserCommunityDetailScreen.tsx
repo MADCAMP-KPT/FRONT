@@ -7,9 +7,8 @@ import TrainerImgListItem from '../components/TrainerImgListItem';
 import { RootStackScreenProps } from '../types';
 import axios from 'axios';
 import { Buffer } from 'buffer';
+import { useNavigation } from '@react-navigation/native';
 import BASE_URL from '../components/BASE_URL';
-// import Base64ArrayBuffer from 'base64-arraybuffer';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 
 // function TrainerImgListItem(src: String) {
@@ -29,7 +28,7 @@ import RNFetchBlob from 'react-native-fetch-blob';
 
 export default function UserCommunityDetailScreen({route}: RootStackScreenProps<'UserCommunityDetail'>) {
 
-  let trainerId = route.params.trainerId
+  const trainerId = route.params.trainerId
   const [trainerImg, setTrainerImg] = useState("https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.blog.daum.net%2Fdiable.666%2F317%3Fnp_nil_b%3D2&psig=AOvVaw3b8jjeV4Miq-OtOXsATdYf&ust=1642948340989000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCKCp4tPJxfUCFQAAAAAdAAAAABAI");
   const [trainerName, setTrainerName] = useState("")
   const [trainerAge, setTrainerAge] = useState(0)
@@ -152,7 +151,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
     // }
   }, [percentage])
 
-  
+  const navigation = useNavigation()
 
   return (
     <View style={styles.container}>
@@ -229,7 +228,11 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
           <View style={styles.reviewTitleBox}>
             <Text style={styles.reviewTitleTxt}>회원들의 한줄평</Text>
             <TouchableOpacity>
-              <Text style={styles.reviewWriteTxt}>한줄평 쓰기</Text>
+              {/* 로그인한 유저의 (현재 혹은 과거) 트레이너가 맞는지 확인 */}
+              <Text style={styles.reviewWriteTxt}
+                onPress={()=>navigation.navigate('UserPostReview', {trainerId: trainerId, trainerName: trainerName})}
+              >한줄평 쓰기
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.reviewContainer}>
@@ -249,12 +252,6 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
 
 
 const styles = StyleSheet.create({
-  safeContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
   container: {
     flex: 1,
     alignItems: 'center',

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, FlatList } from 'react-native';
 import UserReqListItem from '../components/UserReqListItem';
 import MyUserListItem from '../components/MyUserListItem';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TrainerMyUserScreen() {
 
@@ -21,7 +22,7 @@ export default function TrainerMyUserScreen() {
   const {navigate} = useNavigation()
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>회원 목록</Text>
       <View style={styles.separatorBold}/>
       <Text style={styles.txtTitle}>신청한 회원</Text>
@@ -43,7 +44,7 @@ export default function TrainerMyUserScreen() {
           renderItem={({item}) => <MyUserListItem userId={item.userId} userName={item.userName}/>}
         />
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

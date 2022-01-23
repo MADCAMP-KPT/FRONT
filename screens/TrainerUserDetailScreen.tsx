@@ -8,6 +8,7 @@ import Modal from 'react-native-simple-modal';
 import { Calendar } from 'react-native-calendars';
 import { RootStackScreenProps } from '../types';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // import { Text, View } from '../components/Themed';
 
@@ -46,7 +47,7 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.rowContainer}>
         <Text style={styles.title}>{userName} 회원님</Text>
         {userSex == 'M'
@@ -126,7 +127,7 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
       </View>
       
       {/* <View style={styles.separator}/> */}
-    </View>
+    </SafeAreaView>
   );
 }
 
