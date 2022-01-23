@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import TimeTable from '../components/TimeTable'
 import axios from 'axios';
 import BASE_URL from '../components/BASE_URL';
@@ -31,13 +32,13 @@ export default function TabOneScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{name} 트레이너님 주간 일정표</Text>
       <View style={styles.separator} />
       <ScrollView>
         <TimeTable />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -45,6 +46,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    padding: 16,
+    paddingBottom: 0,
   },
   title: {
     fontSize: 25,

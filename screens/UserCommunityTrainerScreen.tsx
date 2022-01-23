@@ -16,9 +16,17 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
   // ];
 
   let gymId = route.params.gymId
+  const [gymName, setGymName] = useState("");
   const [trainerList, setTrainerList] = useState<Array<any>>([]);
 
   useEffect(()=> {
+    axios.get(`${BASE_URL}/gyms/${gymId}`)
+      .then((res)=>{
+        setGymName(res.data.result[0].name)
+      }).catch((err)=>{
+        console.log(err)
+      })
+
     axios.get(`${BASE_URL}/gyms/${gymId}/trainers`)
       .then(
         res=>{
@@ -38,7 +46,7 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
   return (
     <View style={styles.container}>
       <View style={styles.rowBox}>
-        <Text style={styles.title}>KIM PT</Text>
+        <Text style={styles.title}>{gymName}</Text>
         
       </View>
       
