@@ -10,7 +10,7 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
     <SafeAreaView>
       <ScrollView>
         <View style={styles.box}>
-          <Text style={{fontSize: 30, fontWeight: 'bold'}}>기영이의 프로필 보기</Text>
+          <Text style={{fontSize: 30, fontWeight: 'bold'}}>기영이 회원의 프로필 보기</Text>
           <View style={styles.container}>
             <Image style={styles.tinyLogo} source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}/>
           </View>
@@ -19,11 +19,11 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
             <Text style={styles.users}>김기영</Text>
           </View>
           <View style={styles.input}>
-            <Text style={styles.text}>지역</Text>
+            <Text style={styles.text}>연락처</Text>
             <Text style={styles.users}>대전광역시 유성구</Text>
           </View>
           <View style={styles.input}>
-            <Text style={styles.text}>소속</Text>
+            <Text style={styles.text}>나이</Text>
             <Text style={styles.users}>minizzang헬스장</Text>
           </View>
           <View style={styles.input}>
@@ -31,34 +31,15 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
             <Text style={styles.users}>남자김기영</Text>
           </View>
           <View style={styles.input}>
-            <Text style={styles.text}>경력</Text>
+            <Text style={styles.text}>운동 경력</Text>
             <Text style={styles.users}>김기영 25살</Text>
           </View>
           <View style={styles.input}>
-            <Text style={styles.text}>한줄소개</Text>
+            <Text style={styles.text}>운동 목적</Text>
             <Text style={styles.users}>김기영입니다.</Text>
           </View>
-          <View style={styles.input}>
-            <Text style={styles.text}>Instagram</Text>
-            <TouchableOpacity onPress={() => 
-              WebBrowser.openBrowserAsync('https://instagram.com/ddungiii?utm_medium=copy_link')}>
-              <Text style={{color:'blue', fontSize: 25}}>@ddungiii</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-        <View style={styles.box}>
-          <Text style={styles.users}>기영's 눈바디</Text>
-          <ScrollView horizontal={true}>
-            {ImageData.map((item, index) => {
-               return (
-                 <TouchableOpacity key={index}>
-                  <Image style={styles.tinyLogo} source={{uri: `${item}`}} />
-                 </TouchableOpacity>
-               )
-            })} 
-          </ScrollView>
-        </View>
-          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity style={styles.redbox} onPress={() => navigation.navigate('Login')}>
             <Text style={styles.users}>로그아웃</Text>
           </TouchableOpacity>
       </ScrollView>
@@ -99,9 +80,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
-    borderWidth: 3,
     margin: 10,
     padding: 10,
+    backgroundColor: '#ffffff'
   },
   touch: {
     width: '40%',
@@ -110,5 +91,13 @@ const styles = StyleSheet.create({
     backgroundColor:'#dddddd',
     margin: 1
   },
+  redbox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    margin: 10,
+    padding: 10,
+    backgroundColor: '#e94b48'
+  }
   });
   

@@ -2,7 +2,7 @@ import { StyleSheet, ScrollView, Text, View, TouchableOpacity } from 'react-nati
 import TimeTable from '../components/TimeTable'
 import { RootTabScreenProps } from '../types';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function TabOneScreen({ navigation, route }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>김기영 트레이너님 주간 일정표</Text>
