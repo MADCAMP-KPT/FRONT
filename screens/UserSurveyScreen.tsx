@@ -4,6 +4,7 @@ import { RadioButton } from "react-native-paper";
 import { RootStackScreenProps } from "../types";
 import NumericInput from "react-native-numeric-input";
 import axios from "axios";
+import { storeId } from "../components/AsyncStorageFunc";
 
 export default function UserSurveyScreen({route, navigation}: RootStackScreenProps<'UserSurvey'>) {
 
@@ -20,6 +21,7 @@ export default function UserSurveyScreen({route, navigation}: RootStackScreenPro
                 "contact": contact, "career": career, "purpose": purpose}
     axios.post('http://192.249.18.145:443/users/register', json).then((res) => {
       console.log(res);
+      storeId(res.data.result.insertId)
       navigation.navigate('UserRoot')
     }).catch((err) => console.log(err))
   }
