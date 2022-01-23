@@ -1,25 +1,80 @@
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import UserReqListItem from '../components/UserReqListItem';
 import MyUserListItem from '../components/MyUserListItem';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import BASE_URL from '../components/BASE_URL';
 
 export default function TrainerMyUserScreen() {
 
-  const userRequestList = [
-    {userId: 1, userName:"김기영"}, // todo: pt 날짜 정보도 보여주기?
-    {userId: 2, userName:"박승민"},
-    {userId: 3, userName:"김민희"},
-    {userId: 4, userName:"강준서"},
-  ];
+  // const userRequestList = [
+  //   {userId: 1, userName:"김기영"}, // todo: pt 날짜 정보도 보여주기?
+  //   {userId: 2, userName:"박승민"},
+  //   {userId: 3, userName:"김민희"},
+  //   {userId: 4, userName:"강준서"},
+  // ];
 
-  const myUserList = [
-    {userId: 1, userName:"짱구"},
-    {userId: 2, userName:"스누피"},
-    {userId: 3, userName:"영구"},
-  ];
+  // const myUserList = [
+  //   {userId: 1, userName:"짱구"},
+  //   {userId: 2, userName:"스누피"},
+  //   {userId: 3, userName:"영구"},
+  // ];
 
   const {navigate} = useNavigation()
+
+  const [pendingList, setPendingList] = useState<Array<any>>([])
+  const [teachingList, setTeachingList] = useState<Array<any>>([])
+
+  const getIdandUpdate = async () => {
+    try {
+      const trainerId = await AsyncStorage.getItem('Id')
+      if (trainerId != null) {
+        axios.get(`${BASE_URL}/trainers/${trainerId}/class/pending`).then((res) => {
+          console.log(res.data.result)
+          setPendingList(
+            res.data.result.map((item)=>{
+              return {
+                classId: item.id,
+                userId: item.user_id,
+                userName: item.name,
+                reqDay: item.day,
+                reqTime: item.time,
+              }
+            })
+          )
+          axios.get(`${BASE_URL}/trainers/${trainerId}/class/teaching`).then((res) => {
+            console.log(res.data.result)
+            setTeachingList(
+              res.data.result.map((item)=>{
+                return {
+                  classId: item.id,
+                  userId: item.user_id,
+                  userName: item.name,
+                  day: item.day,
+                  time: item.time,
+                  remainingPt: item.remaining_pt
+                }
+              })
+            )
+          })
+        }).catch((err) => console.log(err))
+      } else {
+        console.log("hi")
+      }
+    } catch (e) {console.log(e);}
+  }
+
+  useEffect(() => {
+    getIdandUpdate()
+  }, [])
+
+  // useEffect(() => {
+  //   axios.get()
+  // }, [pendingList, teachingList])
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,7 +85,7 @@ export default function TrainerMyUserScreen() {
       <View style={styles.userRequestList}>
         <FlatList
           keyExtractor={item => String(item.userId)}
-          data = {userRequestList}
+          data = {pendingList}
           renderItem={({item}) => <UserReqListItem userName={item.userName}/>}
         />
       </View>
@@ -39,9 +94,16 @@ export default function TrainerMyUserScreen() {
       <View style={styles.separator}/>
       <View style={styles.myUserList}>
         <FlatList
-          keyExtractor={item => String(item.userId)}
-          data = {myUserList}
-          renderItem={({item}) => <MyUserListItem userId={item.userId} userName={item.userName}/>}
+          keyExtractor={item => String(item.classId)}
+          data = {teachingList}
+          renderItem={({item}) =>
+            <MyUserListItem
+              classId={item.classId}
+              userId={item.userId}
+              userName={item.userName}
+              day={item.day}
+              time={item.time}
+              remainingPT={item.remainingPt}/>}
         />
       </View>
     </SafeAreaView>

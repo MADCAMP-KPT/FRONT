@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Picker, FlatList, TouchableOpacity } from "react-native";
 import DropdownMenu from "react-native-dropdown-menu";
-import DropDownPicker from "react-native-dropdown-picker";
 import { RootStackScreenProps } from '../types';
 import UserCommuTrainerListItem from "../components/UserCommuTrainerListItem";
 import axios from "axios";
@@ -53,8 +52,9 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
       <View style={styles.separator}/>
       
       <FlatList
-        style={styles.flatList}
-        keyExtractor={item => String(item.trainerId)}
+        numColumns={2}
+        columnWrapperStyle={styles.columnWrapper}
+        keyExtractor={(item, index) => String(item.trainerId)}
         data = {trainerList}
         renderItem={({item}) => <UserCommuTrainerListItem trainerId={item.trainerId} trainerName={item.trainerName}/>}
       />
@@ -84,12 +84,13 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginTop: 5,
+    marginBottom: 5,
     height: 1,
     width: '100%',
     zIndex: -1,
     backgroundColor: '#dddddd'
   },
-  flatList: {
-    zIndex: -1
+  columnWrapper: {
+    justifyContent: 'space-between',
   },
 })

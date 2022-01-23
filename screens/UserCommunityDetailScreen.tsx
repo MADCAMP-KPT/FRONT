@@ -109,7 +109,8 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
     // }
     // )
 
-    setPercentage(70)
+    // input = 4.5
+    setPercentage(4.5*20)
   }, [])
 
   React.useEffect(() => {

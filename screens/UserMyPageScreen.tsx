@@ -1,103 +1,244 @@
-import * as WebBrowser from 'expo-web-browser';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from "react-native";
+import { useState, useEffect } from 'react';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import PTMemoItem from '../components/PTMemoItem';
+import { AntDesign, Ionicons  } from '@expo/vector-icons';
 import { UserTabScreenProps } from '../types';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import BASE_URL from '../components/BASE_URL';
 
 export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserTabThree'>) {
 
-  const ImageData : Array<String> = Array(10).fill('https://reactnative.dev/img/tiny_logo.png');
+  const day = "fri"
+  const time = 9
+  const remainingPT = 3
+
+  const [userName, setUserName] = useState("")
+  const [userSex, setUserSex] = useState("")
+  const [userAge, setUserAge] = useState(0)
+  const [userContact, setUserContact] = useState("")
+  const [userCareer, setUserCareer] = useState("")
+  const [userPurpose, setUserPurpose] = useState("")
+  const [KoreanDay, setKoreanDay] = useState("")
+
+  const [memoHistory, setMemoHistory] = useState<Array<any>>([])
+
+  const memoData = [
+    {id: 1, date:"1월 4일", text:"냠냠"},
+    {id: 2, date:"1월 8일", text:"스쿼트"},
+    {id: 3, date:"1월 9일", text:"굿"},
+    {id: 4, date:"1월 20일", text:"레그레이즈"},
+    {id: 5, date:"1월 29일", text:"메롱"},
+  ];
+
+  const getIdandUpdate = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('Id')
+      if (userId != null) {
+        axios.get(`${BASE_URL}/users/${userId}`).then((res) => {
+          console.log(res.data.result[0])
+          setUserName(res.data.result[0].name)
+          setUserSex(res.data.result[0].sex)
+          setUserAge(res.data.result[0].age)
+          setUserContact(res.data.result[0].contact)
+          setUserCareer(res.data.result[0].career)
+          setUserPurpose(res.data.result[0].purpose)
+
+          // axios.get(`${BASE_URL}/trainers/${trainerId}/class/teaching`).then((res) => {
+          //   console.log(res.data.result)
+          //   setTeachingList(
+          //     res.data.result.map((item)=>{
+          //       return {
+          //         classId: item.id,
+          //         userId: item.user_id,
+          //         userName: item.name,
+          //         day: item.day,
+          //         time: item.time,
+          //         remainingPt: item.remaining_pt
+          //       }
+          //     })
+          //   )
+          // })
+        }).catch((err) => console.log(err))
+      } else {
+        console.log("hi")
+      }
+    } catch (e) {console.log(e);}
+  }
+
+  useEffect(() => {
+    getIdandUpdate()
+  }, [])
+
+
+  // useEffect(()=>{
+  //   axios.get(`${BASE_URL}/users/${userId}`).then((res)=>{
+  //     setUserName(res.data.result[0].name)
+  //     setUserSex(res.data.result[0].sex)
+  //     setUserAge(res.data.result[0].age)
+  //     setUserContact(res.data.result[0].contact)
+  //     setUserCareer(res.data.result[0].career)
+  //     setUserPurpose(res.data.result[0].purpose)
+
+  //   }).catch((err)=>{console.log(err)})
+
+  //   switch (day) {
+  //     case ("mon"):
+  //       setKoreanDay("월")
+  //       break
+  //     case ("tue"):
+  //       setKoreanDay("화")
+  //       break
+  //     case ("wed"):
+  //       setKoreanDay("수")
+  //       break
+  //     case ("thur"):
+  //       setKoreanDay("목")
+  //       break
+  //     case ("fri"):
+  //       setKoreanDay("금")
+  //       break
+  //   }
+  // }, [])
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.rowContainer}>
+        <Text style={styles.title}>{userName} 회원님</Text>
+        {userSex == 'M'
+          ? <Ionicons name="male" size={28} color="skyblue" />
+          : <Ionicons name="female" size={28} color="pink" />}
+      </View>
+      <View style={styles.separator}/>
       <ScrollView>
-        <View style={styles.box}>
-          <Text style={{fontSize: 30, fontWeight: 'bold'}}>기영이 회원의 프로필 보기</Text>
-          <View style={styles.container}>
-            <Image style={styles.tinyLogo} source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}/>
+        <View style={styles.infoContainer}>
+          <View style={styles.infoInnerBox}>
+            <Text style={styles.infoTxtTitle}>나이</Text>
+            <Text style={styles.infoTxtTitle}>연락처</Text>
+            <Text style={styles.infoTxtTitle}>운동 경력</Text>
+            <Text style={styles.infoTxtTitle}>운동 목적</Text>
           </View>
-          <View style={styles.input}>
-            <Text style={styles.text}>이름</Text>
-            <Text style={styles.users}>김기영</Text>
-          </View>
-          <View style={styles.input}>
-            <Text style={styles.text}>연락처</Text>
-            <Text style={styles.users}>대전광역시 유성구</Text>
-          </View>
-          <View style={styles.input}>
-            <Text style={styles.text}>나이</Text>
-            <Text style={styles.users}>minizzang헬스장</Text>
-          </View>
-          <View style={styles.input}>
-            <Text style={styles.text}>성별</Text>
-            <Text style={styles.users}>남자김기영</Text>
-          </View>
-          <View style={styles.input}>
-            <Text style={styles.text}>운동 경력</Text>
-            <Text style={styles.users}>김기영 25살</Text>
-          </View>
-          <View style={styles.input}>
-            <Text style={styles.text}>운동 목적</Text>
-            <Text style={styles.users}>김기영입니다.</Text>
+          <View style={styles.infoInnerBox}>
+            <Text style={styles.infoTxt}>{userAge}</Text>
+            <Text style={styles.infoTxt}>{userContact}</Text>
+            <Text style={styles.infoTxt}>{userCareer}</Text>
+            <Text style={styles.infoTxt}>{userPurpose}</Text>
           </View>
         </View>
-          <TouchableOpacity style={styles.redbox} onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.users}>로그아웃</Text>
-          </TouchableOpacity>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>남은 횟수</Text>
+          <Text style={styles.infoTxt}>{remainingPT}회</Text>
+        </View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>PT 시간</Text>
+          <Text style={styles.infoTxt}>{KoreanDay}요일 {time}시</Text>
+        </View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>나의 트레이너</Text>
+          <Text style={styles.infoTxt}>{KoreanDay}요일 {time}시</Text>
+        </View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>Memo</Text>
+        </View>
+
+        <View style={styles.memoList}>
+          <FlatList
+            keyExtractor={item => String(item.id)}
+            data = {memoData}
+            horizontal = {true}
+            renderItem={({item}) => <PTMemoItem date={item.date} text={item.text}/>}
+          />
+        </View>
       </ScrollView>
+      
+      
+      
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8
   },
-  tinyLogo: {
-    width: 150,
-    height: 150,
-    borderRadius: 100,
-    margin: 20
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginRight: 5
   },
-  logo: {
-    width: 66,
-    height: 58,
+  separator: {
+    marginTop: 5,
+    height: 1,
+    width: '100%',
+    backgroundColor: '#dddddd'
   },
-  input: {
+  infoContainer: {
+    flex: 3,
     flexDirection: 'row',
-    margin: 10,
-    padding: 5,
-    alignItems: 'center'
+    alignSelf: 'stretch',
+    backgroundColor: '#dddddd',
+    marginVertical: 10,
+    marginHorizontal: 10,
+    borderRadius: 20
   },
-  text: {
-    textDecorationLine: 'underline',
-    fontSize: 25,
-    margin: 5
+  infoInnerBox: {
+    // flex: 1,
+    // height: 10
+    padding: 20,
   },
-  users: {
-    fontSize: 25,
-    margin: 5 
+  infoTxtTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 5,
+    marginRight: 10
   },
-  box: {
+  infoTxt: {
+    fontSize: 16,
+    marginVertical: 5,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    marginHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  memoList: {
+    flex: 5,
+    alignSelf: 'flex-start',
+    marginHorizontal: 10,
+    zIndex: -1
+  },
+  dateTxt: {
+    fontSize: 20,
+    fontWeight: '600'
+  },
+  memoInput: {
+    height: 200,
+    fontSize: 20,
+    width: 300,
+    marginVertical: 20,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: '#dddddd',
+    borderRadius: 20
+  },
+  summitTxt: {
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  summitBtn: {
+    width: 100,
+    height: 40,
+    backgroundColor: 'lightgreen',
+    borderRadius: 20,
+    padding: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#ffffff'
-  },
-  touch: {
-    width: '40%',
-    alignItems: 'center',
-    padding: 8,
-    backgroundColor:'#dddddd',
-    margin: 1
-  },
-  redbox: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#e94b48'
+    alignSelf: 'center'
   }
-  });
-  
+});

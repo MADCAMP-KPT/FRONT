@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Picker, FlatList, TouchableOpacity } from "react-native";
 import DropdownMenu from "react-native-dropdown-menu";
-import DropDownPicker from "react-native-dropdown-picker";
 import UserCommuGymListItem from "../components/UserCommuGymListItem";
 import BASE_URL from '../components/BASE_URL';
 import axios from "axios";

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FlatList, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -9,24 +9,35 @@ import { Calendar } from 'react-native-calendars';
 import { RootStackScreenProps } from '../types';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import axios from 'axios';
+import BASE_URL from '../components/BASE_URL';
 
 // import { Text, View } from '../components/Themed';
 
 export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>) {
 
-  let userId = route.params.userId  // MyUserListItem에서 navigate될 때 파라미터로 받은 유저 id
-  let userName = "박승민"
-  let userSex = "M"
-  let userMobile = "010-9999-2222"
-  let userPurpose = "다이어트"
+  const classId = route.params.classId  // MyUserListItem에서 navigate될 때 파라미터로 받은 클래스 id
+  const userId = route.params.userId
+  const day = route.params.day
+  const time = route.params.time
+  const remainingPT = route.params.remainingPT
+
+  const [userName, setUserName] = useState("")
+  const [userSex, setUserSex] = useState("")
+  const [userAge, setUserAge] = useState(0)
+  const [userContact, setUserContact] = useState("")
+  const [userCareer, setUserCareer] = useState("")
+  const [userPurpose, setUserPurpose] = useState("")
+  const [KoreanDay, setKoreanDay] = useState("")
   
   const [modalOpen, setModalOpen] = useState(false)
   const [dateModalOpen, setDateModalOpen] = useState(false)
   
-  let time = new Date();
-  let date = String(time.getFullYear())+"-"+String(time.getMonth()+1)+"-"+String(time.getDate());
+  let timeNow = new Date();
+  let date = String(timeNow.getFullYear())+"-"+String(timeNow.getMonth()+1)+"-"+String(timeNow.getDate());
 
   const [memo, setMemo] = useState("")
+  const [memoHistory, setMemoHistory] = useState<Array<any>>([])
   const [selectedDay, setSelectedDay] = useState(date)
 
  
@@ -46,6 +57,41 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
     return splitted[0]+"년 "+splitted[1]+"월 "+splitted[2]+"일"
   }
 
+  useEffect(()=>{
+    axios.get(`${BASE_URL}/users/${userId}`).then((res)=>{
+      console.log(res.data.result[0])
+      setUserName(res.data.result[0].name)
+      setUserSex(res.data.result[0].sex)
+      setUserAge(res.data.result[0].age)
+      setUserContact(res.data.result[0].contact)
+      setUserCareer(res.data.result[0].career)
+      setUserPurpose(res.data.result[0].purpose)
+
+    }).catch((err)=>{console.log(err)})
+
+    // axios.get(`${BASE_URL}/memo/${classId}`).then((res)=>{
+    //   console.log(res.data.result)
+    // })
+
+    switch (day) {
+      case ("mon"):
+        setKoreanDay("월")
+        break
+      case ("tue"):
+        setKoreanDay("화")
+        break
+      case ("wed"):
+        setKoreanDay("수")
+        break
+      case ("thur"):
+        setKoreanDay("목")
+        break
+      case ("fri"):
+        setKoreanDay("금")
+        break
+    }
+  }, [])
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.rowContainer}>
@@ -56,21 +102,25 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.infoInnerBox}>
+          <Text style={styles.infoTxtTitle}>나이</Text>
           <Text style={styles.infoTxtTitle}>연락처</Text>
+          <Text style={styles.infoTxtTitle}>운동 경력</Text>
           <Text style={styles.infoTxtTitle}>운동 목적</Text>
         </View>
         <View style={styles.infoInnerBox}>
-          <Text style={styles.infoTxt}>{userMobile}</Text>
+          <Text style={styles.infoTxt}>{userAge}</Text>
+          <Text style={styles.infoTxt}>{userContact}</Text>
+          <Text style={styles.infoTxt}>{userCareer}</Text>
           <Text style={styles.infoTxt}>{userPurpose}</Text>
         </View>
       </View>
       <View style={styles.rowContainer}>
         <Text style={styles.infoTxtTitle}>남은 횟수</Text>
-        <Text style={styles.infoTxt}>8회</Text>
+        <Text style={styles.infoTxt}>{remainingPT}회</Text>
       </View>
       <View style={styles.rowContainer}>
         <Text style={styles.infoTxtTitle}>PT 시간</Text>
-        <Text style={styles.infoTxt}>화요일 17시, 목요일 17시</Text>
+        <Text style={styles.infoTxt}>{KoreanDay}요일 {time}시</Text>
       </View>
       <View style={styles.rowContainer}>
         <Text style={styles.infoTxtTitle}>Memo</Text>
