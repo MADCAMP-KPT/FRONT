@@ -3,13 +3,13 @@ import { useState } from 'react'
 import { RootStackScreenProps } from '../types'
 import { RadioButton } from 'react-native-paper'
 import axios from 'axios'
+import { storeId } from '../components/AsyncStorageFunc'
 
 export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
 
   const [checked, setChecked] = useState('User');
   const [id, setId] = useState('test');
   const [pw, setPw] = useState('test');
-
 
   // (checked === 'User') ? navigation.navigate('UserRoot') : navigation.navigate('Root')
   const onLogin = () => {
@@ -19,6 +19,7 @@ export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>)
         if(res.data.result.length == 0) {
           alert('존재하지 않는 회원입니다.')
         } else {
+          storeId(res.data.result[0].id)
           navigation.navigate('UserRoot')
         }
       })
@@ -28,6 +29,8 @@ export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>)
         if(res.data.result.length == 0) {
           alert('존재하지 않는 회원입니다.')
         } else {
+          console.log(res.data.result[0].insertId);
+          storeId(res.data.result[0].id)
           navigation.navigate('Root')
         }
       })

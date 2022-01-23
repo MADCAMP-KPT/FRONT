@@ -13,7 +13,7 @@ export default function TimeTable() {
                         return item + ':00 PM'
                       } 
                     })
-  const tableData: Array<any> = Array(tableTitle.length).fill(Array(tableHead.length - 1).fill(''))
+  const tableData: Array<any> = Array(tableTitle.length).fill(Array(tableHead.length - 1).fill('1'))
 
   return( 
     <View style={styles.container}>
