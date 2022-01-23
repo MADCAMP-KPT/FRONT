@@ -27,6 +27,7 @@ import SigninScreen from '../screens/SigninScreen';
 import UserSurveyScreen from '../screens/UserSurveyScreen';
 import UserCommunityScreen from '../screens/UserCommunityScreen';
 import UserCommunityDetailScreen from '../screens/UserCommunityDetailScreen';
+import UserCommunityTrainerScreen from '../screens/UserCommunityTrainerScreen';
 import { UserTabParamList, UserTabScreenProps } from '../types'; // Tab types for users
 import LinkingConfiguration from './LinkingConfiguration';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -61,6 +62,8 @@ function RootNavigator() {
       <Stack.Screen name="UserRoot" component={UserBottomTabNavigator} options={{headerShown: false}} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="UserDetail" component={UserDetailScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="UserCommunityDetail" component={UserCommunityDetailScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="UserCommunityTrainer" component={UserCommunityTrainerScreen} options={{headerShown: false}}/>
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} options={{headerShown: false, contentStyle:{height: '20%'}}} />
       </Stack.Group>
@@ -127,7 +130,7 @@ function UserBottomTabNavigator() {
       }}>
       <UserBottomTab.Screen
         name="UserTabOne"
-        component={UserCommunityDetailScreen}
+        component={UserCommunityScreen}
         options={({ navigation }: UserTabScreenProps<'UserTabOne'>) => ({
           title: 'Timetable',
           headerShown: false,

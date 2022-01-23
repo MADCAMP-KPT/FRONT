@@ -23,6 +23,8 @@ export type RootStackParamList = {
   UserRoot: NavigatorScreenParams<UserTabParamList> | undefined;
   Modal: undefined;
   UserDetail: {userId: number};
+  UserCommunityDetail: {trainerId: number};
+  UserCommunityTrainer: {gymId: number};
   NotFound: undefined;
 };
 
