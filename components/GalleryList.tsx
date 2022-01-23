@@ -1,7 +1,9 @@
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from "react-native"
+import { Dispatch, SetStateAction } from "react"
 
 
-export default function GalleryList({imageData, date}: {imageData: Array<String>, date: String}) {
+export default function GalleryList({imageData, date, arr, setArr}:
+   {imageData: Array<String>, date: String, arr: String[][], setArr: Dispatch<SetStateAction<String[][]>>}) {
 
   return (
     <View style={styles.container}>
@@ -10,13 +12,20 @@ export default function GalleryList({imageData, date}: {imageData: Array<String>
       <ScrollView horizontal={true}>
         {imageData.map((item, index) => {
           return (
-            <TouchableOpacity key={index} >
+            <TouchableOpacity key={index} onPress={() => {
+              for(var k = 0; k < arr.length ; k++) {
+                if(arr[k][0] === item && arr[k][1] === date) {
+                  return setArr(arr => arr.filter((item, i) => i != k))
+                }
+              }
+              return
+            }}>
               <Image style={styles.tinyLogo} source={{uri: `${item}`}} />
             </TouchableOpacity>
           )
         })} 
       </ScrollView>
-  </View>      
+    </View>      
   )
 }
 
