@@ -45,7 +45,7 @@ export type UserTabParamList = {
 
 export type GalleryTabParamList = {
   InBody: undefined;
-  NoonBody : undefined;
+  NoonBody :undefined;
 }
 
 export type GalleryTabScreenProps<Screen extends keyof GalleryTabParamList> = CompositeScreenProps<

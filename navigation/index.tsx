@@ -20,7 +20,7 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TrainerMyPageScreen from '../screens/TrainerMyPageScreen'
 import NoonBodyScreen from '../screens/NoonBodyScreen';
 import InBodyScreen from '../screens/InBodyScreen';
-import { GalleryTabParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { GalleryTabParamList, RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../types';
 import UserDetailScreen from '../screens/TrainerUserDetailScreen';
 import TrainerMyUserScreen from '../screens/TrainerMyUserScreen';
 import SigninScreen from '../screens/SigninScreen';
@@ -90,7 +90,8 @@ function BottomTabNavigator() {
           headerShown: false,
           title: '시간표',
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="timetable" size={24} color={color} />,
-        }}
+        }
+      }
       />
       <BottomTab.Screen
         name="TabTwo"
@@ -118,7 +119,6 @@ const UserBottomTab = createBottomTabNavigator<UserTabParamList>();
 
 function UserBottomTabNavigator() {
   const colorScheme = useColorScheme();
-
   return (
     <UserBottomTab.Navigator
       initialRouteName="UserTabOne"

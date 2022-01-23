@@ -1,8 +1,9 @@
+import axios from 'axios';
 import * as WebBrowser from 'expo-web-browser';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from "react-native";
 import { RootTabScreenProps } from '../types';
 
-export default function TrainerMyPageScreen({navigation}: RootTabScreenProps<'TabThree'>) {
+export default function TrainerMyPageScreen({navigation, route}: RootTabScreenProps<'TabThree'>) {
 
   const ImageData : Array<String> = Array(10).fill('https://reactnative.dev/img/tiny_logo.png');
 
