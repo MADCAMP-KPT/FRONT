@@ -41,7 +41,7 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           UserTabOne: {
             screens: {
-              TabTwoScreen: 'userone',
+              UserCommunityDetailScreen: 'userone',
             },
           },
           UserTabTwo: {
@@ -60,7 +60,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           UserTabThree: {
             screens: {
-              TabTwoScreen: 'userthree',
+              UserMyPageScreen: 'userthree',
             },
           },
         },
