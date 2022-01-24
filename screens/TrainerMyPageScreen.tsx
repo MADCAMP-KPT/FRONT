@@ -10,9 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 export default function TrainerMyPageScreen({navigation, route}: RootTabScreenProps<'TabThree'>) {
 
-  const ImageData : Array<String> = Array(10).fill('https://reactnative.dev/img/tiny_logo.png');
   const [imgList, setImgList] = useState<String[]>([])
-
   const [name, setName] = useState('')
   const [sex, setSex] = useState('남')
   const [age, setAge] = useState(25)
@@ -22,7 +20,6 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
   const [career, setCareer] = useState('')
   const [intro, setIntro] = useState('')
   const [id, setId] = useState('')
-
   const [pickedImagePath, setPickedImagePath] = useState('');
 
   const showImagePicker = async () => {
