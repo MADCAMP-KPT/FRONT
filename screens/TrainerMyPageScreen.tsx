@@ -155,14 +155,15 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
               :
               imgList.map((img, i) => {
                 return (
-                  <TouchableOpacity key={i} onPress={() => {
+                  <TouchableOpacity key={i} onPress={() => {Alert.alert('알림', '사진을 삭제하시겠습니까?', [{text: '아니오', style: 'cancel'},
+                  {text: '네', onPress: () => {
                     for(var k = 0; k < imgList.length ; k ++ ) {
                       if(imgList[k] === img) {
                         return setImgList(arr => arr.filter((img, i) => i != k))
                       }
                     }
                     return
-                  }}>
+                    }}])}}>
                     <Image style={styles.noonBody} source={{uri: `data:image/png;base64,${img}`}} />
                   </TouchableOpacity>
                 )

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from "react-native"
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, Alert } from "react-native"
 import { Dispatch, SetStateAction } from "react"
 
 
@@ -12,14 +12,14 @@ export default function GalleryList({imageData, date, arr, setArr}:
       <ScrollView horizontal={true}>
         {imageData.map((item, index) => {
           return (
-            <TouchableOpacity key={index} onPress={() => {
-              for(var k = 0; k < arr.length ; k++) {
-                if(arr[k][0] === item && arr[k][1] === date) {
-                  return setArr(arr => arr.filter((item, i) => i != k))
-                }
+            <TouchableOpacity key={index} onPress={() => {Alert.alert('알림', '사진을 삭제하시겠습니까?', [{text: '아니오', style: 'cancel'},
+          {text: '네', onPress: () => {
+            for(var k = 0; k < arr.length ; k++) {
+              if(arr[k][0] === item && arr[k][1] === date) {
+                return setArr(arr => arr.filter((item, i) => i != k))
               }
-              return
-            }}>
+            }
+            return }}])}}>
               <Image style={styles.tinyLogo} source={{uri: `data:image/png;base64,${item}`}} />
             </TouchableOpacity>
           )
