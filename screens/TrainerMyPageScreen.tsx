@@ -52,6 +52,8 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
   
     if(!result.cancelled) {
       setImgList([...imgList, result.base64!])
+      axios.post(`${BASE_URL}/images/trainer/${id}`, {'image': result.base64})
+      .then((res) => console.log(res)).catch((err) => console.log(err)) 
     }
   } 
 
@@ -78,6 +80,14 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
               console.log(res);
               setPickedImagePath(res.data[0].thumbnail)
               // require: GET trainer's noonbody method
+              axios.get(`${BASE_URL}/images/trainer/${value}`).then((res) => {
+                console.log(res);
+                let temp: string[] = []
+                res.data.result.map((item) => {
+                  temp.push(item.image)
+                })
+                setImgList([...temp])
+              })
             }).catch((err) => console.log(err))
           })
         })

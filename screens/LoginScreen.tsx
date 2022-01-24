@@ -10,8 +10,8 @@ import { setStatusBarBackgroundColor } from 'expo-status-bar'
 export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
 
   const [checked, setChecked] = useState('User');
-  const [id, setId] = useState('kim');
-  const [pw, setPw] = useState('kimpw');
+  const [id, setId] = useState('aa1');
+  const [pw, setPw] = useState('test');
 
   // (checked === 'User') ? navigation.navigate('UserRoot') : navigation.navigate('Root')
   const onLogin = () => {
