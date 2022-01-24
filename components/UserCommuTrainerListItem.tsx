@@ -6,9 +6,10 @@ import { Buffer } from 'buffer';
 import axios from "axios";
 import BASE_URL from "../components/BASE_URL";
 
-export default function UserCommuTrainerListItem({trainerId, trainerName}:{
+export default function UserCommuTrainerListItem({trainerId, trainerName, gymName}:{
   trainerId : number,
   trainerName : String,
+  gymName : String,
 }) {
 
   const navigation = useNavigation()
@@ -44,7 +45,7 @@ export default function UserCommuTrainerListItem({trainerId, trainerName}:{
             ? <Ionicons name="male" size={24} color="skyblue" />
             : <Ionicons name="female" size={24} color="pink" />}
       </View>
-      <Text style={styles.ratingTxt}>평점 : {rating}</Text>
+      <Text style={styles.ratingTxt}>평점 : {String(rating).substr(0,4)}</Text>
     </TouchableOpacity>
   )
 }

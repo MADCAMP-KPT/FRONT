@@ -57,6 +57,14 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
     return splitted[0]+"년 "+splitted[1]+"월 "+splitted[2]+"일"
   }
 
+  const postMemo = () => {
+    axios.post(`${BASE_URL}/memo`, {
+      "user_id": userId,
+      "date": "2022-01-24", 
+      "content": "잘했어용"
+    })
+  }
+
   useEffect(()=>{
     axios.get(`${BASE_URL}/users/${userId}`).then((res)=>{
       console.log(res.data.result[0])
@@ -123,7 +131,7 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
         <Text style={styles.infoTxt}>{KoreanDay}요일 {time}시</Text>
       </View>
       <View style={styles.rowContainer}>
-        <Text style={styles.infoTxtTitle}>Memo</Text>
+        <Text style={styles.infoTxtTitle}>운동 기록</Text>
         <TouchableOpacity style={styles.plusButton}
           onPress={()=>setModalOpen(true)}>
           <AntDesign name="pluscircle" size={24} color="black" />

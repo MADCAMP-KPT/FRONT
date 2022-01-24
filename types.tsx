@@ -26,6 +26,7 @@ export type RootStackParamList = {
   UserDetail: {classId: number, userId : number, day : String, time: number, remainingPT: number};
   UserCommunityDetail: {trainerId: number};
   UserCommunityTrainer: {gymId: number};
+  UserApply: {trainerId: number};
   UserPostReview: {trainerId: number, trainerName: String};
   NotFound: undefined;
 };
