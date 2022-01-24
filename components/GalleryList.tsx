@@ -20,7 +20,7 @@ export default function GalleryList({imageData, date, arr, setArr}:
               }
               return
             }}>
-              <Image style={styles.tinyLogo} source={{uri: `${item}`}} />
+              <Image style={styles.tinyLogo} source={{uri: `data:image/png;base64,${item}`}} />
             </TouchableOpacity>
           )
         })} 

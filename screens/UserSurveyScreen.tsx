@@ -97,14 +97,14 @@ const styles = StyleSheet.create({
   },
   tinput: {
     width: 200,
-    borderWidth: 1,
+    backgroundColor: 'white',
     padding: 10,
     fontSize: 15,
     margin: 5,
     borderRadius: 10
   },
   radio: {
-    borderWidth: 1,
+    backgroundColor: 'white',
     margin: 5,
     borderRadius: 10,
 
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   multiinput: {
     height: 80,
     width: 250,
-    borderWidth: 1,
+    backgroundColor: 'white',
     fontSize: 15,
     margin: 5,
     borderRadius: 10

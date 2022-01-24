@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, ScrollView } from "react-native";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { RadioButton } from "react-native-paper";
 import { RootStackScreenProps } from "../types";
 import NumericInput from "react-native-numeric-input";
 import axios from "axios";
 import { storeId } from "../components/AsyncStorageFunc";
+import BASE_URL from "../components/BASE_URL";
+import DropdownMenu from 'react-native-dropdown-menu'
 
 export default function TrainerSurveyScreen({route, navigation}: RootStackScreenProps<'TrainerSurvey'>) {
 
@@ -12,11 +14,34 @@ export default function TrainerSurveyScreen({route, navigation}: RootStackScreen
   const [name, setName] = useState('')
   const [sex, setSex] = useState('남')
   const [age, setAge] = useState(25)
-  const [city, setCity] = useState('')
+  const [city, setCity] = useState('서울')
   const [company, setCompany] = useState('')
   const [instagram, setInst] = useState('')
   const [career, setCareer] = useState('')
   const [intro, setIntro] = useState('')
+
+  const [cityList, setCityList] = useState<string[]>([])
+  const [companyList, setCompList] = useState<string[][]>([[""]])
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/gyms/cities`).then((res) => {
+        let arr: string[] = []
+        res.data.result.map((item) => {
+            arr.push(item.city)
+        })
+        setCityList([...arr])
+    })
+  }, [])
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/gyms/${city}/all`).then((res) => {
+        let gyms: string[][] = [[]]
+        res.data.result.map((item) => {
+            gyms[0].push(item.name)
+        })
+        setCompList([...gyms])
+    })
+  }, [city])
 
   const onComplete = () => {
     let json = {"login_id": trainerId, "login_pw": trainerPw, "name": name, "sex": sex, 
@@ -43,11 +68,28 @@ export default function TrainerSurveyScreen({route, navigation}: RootStackScreen
         </View>
         <View style={styles.input}>
             <Text style={styles.text}>지역</Text>
-            <TextInput style={styles.tinput} placeholder='location' value={city} onChangeText={setCity} />
+            <ScrollView horizontal={true} >
+            <RadioButton.Group onValueChange={newValue => setCity(newValue)} value={city}>
+            <View style={{flexDirection: 'row'}}>
+                {cityList.map((item, i) => {
+                    return <RadioButton.Item key={i} style={styles.cities} label={item} value={item} color={'black'} />
+                })}
+            </View>
+            </RadioButton.Group>
+            </ScrollView>
         </View>
-        <View style={styles.input}>
+        <View style={{flexDirection: 'row', margin: 0, padding: 5, alignItems: 'center',}}>
             <Text style={styles.text}>소속</Text>
-            <TextInput style={styles.tinput} placeholder='company' value={company} onChangeText={setCompany} />
+            <DropdownMenu
+            style={{flex: 1}}
+            bgColor={'white'}
+            activityTintColor={'skyblue'}
+            optionTextStyle={{color: 'green', fontSize: 15}}
+            titleStyle={{color: 'green', fontSize: 20, fontWeight: 'bold'}} 
+            data={companyList}
+            // maxHeight={100}
+            handler={(selection, row) => setCompany((companyList)[selection][row])}>
+          </DropdownMenu>
         </View>
         <View style={styles.input}>
             <Text style={styles.text}>SNS</Text>
@@ -98,7 +140,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 0,
     padding: 5,
-    alignItems: 'center'
+    alignItems: 'center',
+    zIndex: -5
   },
   text: {
     textDecorationLine: 'underline',
@@ -107,22 +150,26 @@ const styles = StyleSheet.create({
   },
   tinput: {
     width: 200,
-    borderWidth: 1,
+    backgroundColor: 'white',
     padding: 10,
     fontSize: 15,
     margin: 5,
     borderRadius: 10
   },
   radio: {
-    borderWidth: 1,
+    backgroundColor: 'white',
     margin: 5,
     borderRadius: 10,
-
+  },
+  cities: {
+    backgroundColor: 'white',
+    margin: 5,
+    borderRadius: 10,
   },
   multiinput: {
     height: 80,
     width: 250,
-    borderWidth: 1,
+    backgroundColor: 'white',
     fontSize: 15,
     margin: 5,
     borderRadius: 10

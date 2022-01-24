@@ -23,13 +23,13 @@ export default function NoonBodyScreen() {
       return;
     }
   
-    const result = await ImagePicker.launchImageLibraryAsync({exif: true});
+    const result = await ImagePicker.launchImageLibraryAsync({exif: true, base64: true, quality: 0});
     // exif.DateTimeOriginal -> "2022:01:21 18:48:22"
     console.log(result)
   
     if(!result.cancelled) {
-      setPickedImagePath(result.uri);
-      setArr([...arr, [result.uri, parseDate(result.exif?.DateTimeOriginal)]])
+      setPickedImagePath(result.base64!);
+      setArr([...arr, [result.base64!, parseDate(result.exif?.DateTimeOriginal)]])
       console.log(arr);
     }
   }
