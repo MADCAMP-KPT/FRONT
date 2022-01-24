@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, Alert } from 'react-native';
 import PTMemoItem from '../components/PTMemoItem';
 import { AntDesign, Ionicons  } from '@expo/vector-icons';
 import { UserTabScreenProps } from '../types';
@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import BASE_URL from '../components/BASE_URL';
+import Navigation from '../navigation';
 
 export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserTabThree'>) {
 
@@ -250,7 +251,8 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
 
         
 
-        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity style={styles.box} onPress={() => Alert.alert('알림', '로그아웃 하시겠습니까?', 
+        [{text: '아니오', style: 'cancel'}, {text: '네', onPress: () => navigation.navigate('Login')}])}>
           <Text style={styles.users}>로그아웃</Text>
         </TouchableOpacity>
 

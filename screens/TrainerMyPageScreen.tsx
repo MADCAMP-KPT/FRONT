@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as WebBrowser from 'expo-web-browser';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity, Alert } from "react-native";
 import { RootTabScreenProps } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import BASE_URL from '../components/BASE_URL';
@@ -170,7 +170,8 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
             }
           </ScrollView>
         </View>
-          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity style={styles.box} onPress={() => Alert.alert('알림', '로그아웃 하시겠습니까?', 
+          [{text: '아니오', style: 'cancel'}, {text: '네', onPress: () => navigation.navigate('Login')}])}>
             <Text style={styles.users}>로그아웃</Text>
           </TouchableOpacity>
       </ScrollView>
