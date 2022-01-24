@@ -56,7 +56,6 @@ export default function TimeTable({teach}: {teach: {day: string, hour: number, u
       const row = tableTitle.indexOf(convertHour(teach[i].hour))
       tableData[row][col] = view(teach[i].userName, teach[i].day, teach[i].hour, teach[i].classId, teach[i].remainingPT, teach[i].userId)
     }
-    console.log(tableData);
     return tableData
   }
 
