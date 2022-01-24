@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from "react-native";
 import { RootStackScreenProps } from "../types";
 import { AirbnbRating, Rating  } from "react-native-ratings";
 import { useNavigation } from '@react-navigation/native';
+import axios from "axios";
+import BASE_URL from "../components/BASE_URL";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { TextInput } from "react-native-paper";
 
 export default function UserPostReviewScreen({route}: RootStackScreenProps<'UserPostReview'>) {
@@ -12,8 +15,32 @@ export default function UserPostReviewScreen({route}: RootStackScreenProps<'User
 
   const [trainerRating, setTrainerRating] = useState(0);
   const [review, setReview] = useState("");
+  const [userId, setUserId] = useState(0);
 
   const navigation = useNavigation()
+
+  const getIdandUpdate = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('Id')
+      if (userId != null) {
+        setUserId(Number(userId))
+      }
+    } catch (e) {console.log(e);}
+  }
+
+  useEffect(() => {
+    getIdandUpdate()
+  }, [])
+
+  const postReview = () => {
+    axios.post(`${BASE_URL}/review`, {
+      "trainer_id": trainerId,
+      "user_id": userId,
+      "content": review,
+      "rating": trainerRating
+    }).then((res)=>console.log(res))
+    .catch((err)=>console.log(err))
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -38,6 +65,7 @@ export default function UserPostReviewScreen({route}: RootStackScreenProps<'User
           style={styles.summitBtn}
           onPress={()=>{
             // console.log(trainerRating)
+            postReview()
             alert("리뷰가 작성되었습니다.")
             navigation.goBack()
           }}>

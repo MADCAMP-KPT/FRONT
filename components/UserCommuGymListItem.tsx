@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { RootTabScreenProps } from '../types';
+import axios from 'axios';
+import BASE_URL from './BASE_URL';
 
 export default function UserCommuGymListItem({gymId, gymName}:{
   gymId : number,
@@ -8,16 +10,21 @@ export default function UserCommuGymListItem({gymId, gymName}:{
 }) {
 
   const navigation = useNavigation()
+  const [trainerNum, setTrainerNum] = useState(0);
+
+  useEffect(()=>{
+    axios.get(`${BASE_URL}/gyms/${gymId}/trainers`).then((res)=>{
+      console.log(res.data.result.length)
+      setTrainerNum(res.data.result.length)
+    }).catch((err)=>console.log(err))
+  }, [])
 
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={()=>navigation.navigate('UserCommunityTrainer', {gymId: gymId})}>
-      <Text style={styles.userName}>{gymName}</Text>
-      <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.btnReject}>
-        </TouchableOpacity>
-      </View>
+      <Text style={styles.gymName}>{gymName}</Text>
+      <Text style={styles.userName}>트레이너 수 : {trainerNum}</Text>
     </TouchableOpacity>
   )
 }
@@ -28,14 +35,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
+    height: 80,
     backgroundColor: '#ffffff',
     borderRadius: 20,
     padding: 20,
     marginBottom: 5
   },
-  userName: {
-    fontSize: 18,
+  gymName: {
+    fontSize: 20,
     fontWeight: '500',
+    alignSelf: 'center',
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: '400',
     alignSelf: 'center',
   },
   btnContainer: {
