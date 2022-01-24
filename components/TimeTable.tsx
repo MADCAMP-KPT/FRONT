@@ -6,6 +6,8 @@ export default function TimeTable({teach}: {teach: {day: string, hour: number, u
 
   const tableHead: Array<string> = ['' ,'mon', 'tue', 'wed', 'thur', 'fri']
   const tableName: Array<string> = ['', '월', '화', '수', '목', '금']
+  // If you want to change this array in table view, you should make new array and replace directly in Tablewrapper component(data)
+  // Because, this array is used for calculating data index.
   const tableTitle: Array<string> = ['06', '07', '08', '09', '10', '11', '12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10']
                     .map((item, index) => {
                       if(index <= 5) {
@@ -15,6 +17,7 @@ export default function TimeTable({teach}: {teach: {day: string, hour: number, u
                       } 
                     })
 
+  // Get hour(number) and convert to AM, PM style
   function convertHour(h: number): string {
     if(h >= 12) {
       if(h === 22 || h === 12) {
@@ -34,10 +37,10 @@ export default function TimeTable({teach}: {teach: {day: string, hour: number, u
 
   const navigation = useNavigation();
 
+  // Private component for already reservated cells. You can add any styles, or any jsx elements inside.
   const view = (userName: string, day: string, time: number, classId: number, rem: number, userId: number) => (
       <TouchableOpacity style={{flex: 1, backgroundColor: 'pink', alignItems: 'center', justifyContent: 'center'}}
-      onPress={() => navigation.navigate('UserDetail', 
-                                          {classId: classId, userId: userId, day: day, time: time, remainingPT: rem})}
+      onPress={() => navigation.navigate('UserDetail', {classId: classId, userId: userId, day: day, time: time, remainingPT: rem})}
       >
         <View>
           <Text style={{fontSize: 15, fontWeight: 'bold'}}>{userName} 님</Text>
@@ -45,6 +48,7 @@ export default function TimeTable({teach}: {teach: {day: string, hour: number, u
       </TouchableOpacity>
   )
 
+  // Convert received data to table data array.
   function convertData(teach: {day: string, hour: number, userName: string, classId: number, remainingPT: number, userId: number}[]) {
     let tableData: any[][] = Array(tableTitle.length).fill('').map(() => Array(tableHead.length - 1).fill(''))
     for(var i = 0; i < teach.length ; i ++) {

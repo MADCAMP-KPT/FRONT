@@ -12,8 +12,8 @@ export default function SigninScreen({navigation}: RootStackScreenProps<'Signin'
   const [chkpw, setChkPw] = useState('');
   // (checked === 'User') ? navigation.navigate('UserSurvey') : navigation.navigate('TrainerSurvey')
   const onSign = () => {
-    if(id === '') {
-      return alert('아이디를 입력해주세요.')
+    if(id === '' || pw === '') {
+      return alert('아이디/비밀번호를 입력해주세요.')
     }
     else if(pw !== chkpw) {
       return alert('비밀번호를 확인해 주세요')
