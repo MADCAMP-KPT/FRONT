@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { useNavigation } from '@react-navigation/native';
 import BASE_URL from '../components/BASE_URL';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // function TrainerImgListItem(src: String) {
@@ -29,26 +30,30 @@ import BASE_URL from '../components/BASE_URL';
 export default function UserCommunityDetailScreen({route}: RootStackScreenProps<'UserCommunityDetail'>) {
 
   const trainerId = route.params.trainerId
+  const [isMyTrainer, setIsMyTrainer] = useState(0)
+  const [isReviewWrote, setIsReviewWrote] = useState(0)
   const [trainerImg, setTrainerImg] = useState("https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.blog.daum.net%2Fdiable.666%2F317%3Fnp_nil_b%3D2&psig=AOvVaw3b8jjeV4Miq-OtOXsATdYf&ust=1642948340989000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCKCp4tPJxfUCFQAAAAAdAAAAABAI");
   const [trainerName, setTrainerName] = useState("")
   const [trainerAge, setTrainerAge] = useState(0)
   const [trainerCareer, setTrainerCareer] = useState("")
   const [trainerIntro, setTrainerIntro] = useState("")
+  const [trainerRating, setTrainerRating] = useState(0)
+  const [trainerReview, setTrainerReview] = useState<Array<any>>([])
 
   const trainderImgData = [
     {id:1, src: trainerImg},
     {id:2, src: "icon.png"}
   ]
-  const trainerReviewData = [
-    {id: 1, score:5, text:"친절하고 좋아요~"},
-    {id: 2, score:2, text:"운동을 너무 빡세게 시켜요 ㅠ"},
-    {id: 3, score:3, text:"낫밷"},
-    {id: 4, score:1, text:"좀 부담스럽네요;;"},
-    {id: 5, score:1, text:"냠냠굿"},
-    {id: 6, score:3, text:"낫밷"},
-    {id: 7, score:1, text:"좀 부담스럽네요;;"},
-    {id: 8, score:1, text:"냠냠굿"},
-  ]
+  // const trainerReviewData = [
+  //   {id: 1, score:5, text:"친절하고 좋아요~"},
+  //   {id: 2, score:2, text:"운동을 너무 빡세게 시켜요 ㅠ"},
+  //   {id: 3, score:3, text:"낫밷"},
+  //   {id: 4, score:1, text:"좀 부담스럽네요;;"},
+  //   {id: 5, score:1, text:"냠냠굿"},
+  //   {id: 6, score:3, text:"낫밷"},
+  //   {id: 7, score:1, text:"좀 부담스럽네요;;"},
+  //   {id: 8, score:1, text:"냠냠굿"},
+  // ]
 
   const radius = 100;
   const strokeWidth = 20;
@@ -62,6 +67,24 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
   const delay = 0;
   const [donutColor, setDonutColor] = useState("")
 
+
+  const getIdandUpdate = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('Id')
+      if (userId != null) {
+        axios.get(`${BASE_URL}/users/${userId}/trainer/${trainerId}`).then((res) => {
+          setIsMyTrainer(res.data.result[0].isMyTrainer)
+          setIsReviewWrote(res.data.result[0].isReviewWrote)
+        }).catch((err) => console.log(err))
+      }
+    } catch (e) {console.log(e);}
+  }
+
+  useEffect(() => {
+    getIdandUpdate()
+  }, [])
+
+
   React.useEffect(() => {   // todo : 트레이너 누를 때마다 애니메이션 작동 되게 해야함.
     axios.get(`${BASE_URL}/trainers/${trainerId}`)
       .then((res)=>{
@@ -70,6 +93,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
         setTrainerAge(res.data.result[0].age)
         setTrainerCareer(res.data.result[0].career)
         setTrainerIntro(res.data.result[0].intro)
+        setTrainerRating(res.data.result[0].rating)
       }).catch((err)=>{
         console.log(err)
       })
@@ -77,7 +101,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
     axios.get(`${BASE_URL}/trainers/${trainerId}/thumbnail`)
       .then(
       res => {
-    //     console.log(res.data);
+        // console.log(res.data[0].thumbnail);
     //     // let blob = new Blob([res.data], { type: "image/png" });
     //     // console.log(blob);
     //     // const url = window.URL.createObjectURL(blob);
@@ -91,7 +115,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
     //     setTrainerImg(url);
     //     console.log(url);
         // console.log(res);
-        setTrainerImg(`data:image/png;base64,${Buffer.from((res.data.data)).toString('base64')}`)
+        setTrainerImg(res.data[0].thumbnail)
         // const photoURI = Base64ArrayBuffer.encode(res.data);
         // console.log(photoURI);
         // setTrainerImg(photoURI);
@@ -110,8 +134,24 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
     // )
 
     // input = 4.5
-    setPercentage(4.5*20)
+
+    axios.get(`${BASE_URL}/review/${trainerId}`).then((res)=>{
+      setTrainerReview(
+        res.data.result.map((item)=>{
+          return {
+            id: item.id,
+            content: item.content,
+            rating: item.rating
+          }
+        })
+      )
+    }).catch((err)=>console.log(err))
+    
   }, [])
+
+  React.useEffect(()=>{
+    setPercentage(trainerRating*20)
+  }, [trainerRating])
 
   React.useEffect(() => {
     if (percentage == 0) {
@@ -202,7 +242,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
               <Image
                 style={styles.trainerImg}
                 // source={require('../assets/images/imgTrainer.jpg')}
-                source={{uri: trainerImg}}
+                source={{uri: `data:image/png;base64,${trainerImg}`}}
               >
               </Image>
             </Svg>
@@ -228,6 +268,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
           />
           <View style={styles.reviewTitleBox}>
             <Text style={styles.reviewTitleTxt}>회원들의 한줄평</Text>
+            {isMyTrainer==1 && isReviewWrote==0 ?
             <TouchableOpacity>
               {/* 로그인한 유저의 (현재 혹은 과거) 트레이너가 맞는지 확인 */}
               <Text style={styles.reviewWriteTxt}
@@ -235,14 +276,15 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
               >한줄평 쓰기
               </Text>
             </TouchableOpacity>
+            :<></>}
           </View>
           <View style={styles.reviewContainer}>
             <FlatList
               contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
               showsVerticalScrollIndicator={false}
               keyExtractor={item => String(item.id)}
-              data = {trainerReviewData}
-              renderItem={({item}) =><TrainerReviewListItem text={item.text} score={item.score}/>}
+              data = {trainerReview}
+              renderItem={({item}) =><TrainerReviewListItem text={item.content} score={item.rating}/>}
             />
           </View>
         </>
@@ -264,6 +306,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: '100%',
+    marginBottom: 18
   },
   rowTitleBox: {
     flexDirection: 'row',

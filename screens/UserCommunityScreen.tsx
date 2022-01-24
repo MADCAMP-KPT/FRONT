@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#dddddd'
   },
   flatList: {
+    paddingTop: 10,
     zIndex: -1
   },
 })

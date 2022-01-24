@@ -24,7 +24,7 @@ export default function UserCommuTrainerListItem({trainerId, trainerName}:{
     }).catch((err)=>console.log(err))
 
     axios.get(`${BASE_URL}/trainers/${trainerId}/thumbnail`).then((res)=>{
-      setTrainerImg(`data:image/png;base64,${Buffer.from((res.data.data)).toString('base64')}`)
+      setTrainerImg(res.data[0].thumbnail)
     }).catch((err)=>console.log(err))
   }, [])
   
@@ -35,7 +35,7 @@ export default function UserCommuTrainerListItem({trainerId, trainerName}:{
       onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId})}>
       <Image
         style={styles.image}
-        source={{uri: trainerImg}}
+        source={{uri: `data:image/png;base64,${trainerImg}`}}
         resizeMode='cover'
       />
       <View style={styles.rowContainer}>

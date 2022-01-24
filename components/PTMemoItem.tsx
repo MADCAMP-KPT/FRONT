@@ -15,6 +15,8 @@ export default function PTMemoItem({date, text}:{
 const styles = StyleSheet.create({
   container: {
     aspectRatio: 1,
+    width: 200,
+    height: 200,
     backgroundColor: '#dddddd',
     marginRight: 15,    // 마지막 item 마진??
     borderRadius: 20,

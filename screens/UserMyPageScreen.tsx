@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import PTMemoItem from '../components/PTMemoItem';
 import { AntDesign, Ionicons  } from '@expo/vector-icons';
 import { UserTabScreenProps } from '../types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import BASE_URL from '../components/BASE_URL';
 
 export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserTabThree'>) {
-
-  const day = "fri"
-  const time = 9
-  const remainingPT = 3
 
   const [userName, setUserName] = useState("")
   const [userSex, setUserSex] = useState("")
@@ -20,7 +17,19 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
   const [userContact, setUserContact] = useState("")
   const [userCareer, setUserCareer] = useState("")
   const [userPurpose, setUserPurpose] = useState("")
+
+  const [remainingPT, setRemainingPT] = useState(0)
+  const [day, setDay] = useState("")
+  const [time, setTime] = useState(0)
   const [KoreanDay, setKoreanDay] = useState("")
+
+  const [trainingStatus, setTrainingStatus] = useState("")
+  const [trainerId, setTrainerId] = useState(0)
+  const [trainerName, setTrainerName] = useState("")
+  const [trainerSex, setTrainerSex] = useState("")
+  const [trainerAge, setTrainerAge] = useState(0)
+  const [trainerInsta, setTrainerInsta] = useState("")
+  const [trainerImage, setTrainerImage] = useState("https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif")
 
   const [memoHistory, setMemoHistory] = useState<Array<any>>([])
 
@@ -45,21 +54,28 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
           setUserCareer(res.data.result[0].career)
           setUserPurpose(res.data.result[0].purpose)
 
-          // axios.get(`${BASE_URL}/trainers/${trainerId}/class/teaching`).then((res) => {
-          //   console.log(res.data.result)
-          //   setTeachingList(
-          //     res.data.result.map((item)=>{
-          //       return {
-          //         classId: item.id,
-          //         userId: item.user_id,
-          //         userName: item.name,
-          //         day: item.day,
-          //         time: item.time,
-          //         remainingPt: item.remaining_pt
-          //       }
-          //     })
-          //   )
-          // })
+          axios.get(`${BASE_URL}/users/${userId}/class`).then((res) => {
+            console.log(res.data.result[0])
+            if (res.data.result[0]!=null){
+              if (res.data.result[0].status == "teaching"){
+                setRemainingPT(res.data.result[0].remaining_pt)
+                setDay(res.data.result[0].day)
+                setTime(res.data.result[0].time)
+                setTrainerId(res.data.result[0].trainer_id)
+                setTrainingStatus("teaching")
+                console.log("hi welcome")
+              } else if (res.data.result[0].status == "pending"){
+                console.log("pending")
+                setDay(res.data.result[0].day)
+                setTime(res.data.result[0].time)
+                setTrainerId(res.data.result[0].trainer_id)
+                setTrainingStatus("pending")
+              }
+            } else {
+              console.log("sorry")
+              setTrainingStatus("none")
+            }
+          })
         }).catch((err) => console.log(err))
       } else {
         console.log("hi")
@@ -72,35 +88,40 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
   }, [])
 
 
-  // useEffect(()=>{
-  //   axios.get(`${BASE_URL}/users/${userId}`).then((res)=>{
-  //     setUserName(res.data.result[0].name)
-  //     setUserSex(res.data.result[0].sex)
-  //     setUserAge(res.data.result[0].age)
-  //     setUserContact(res.data.result[0].contact)
-  //     setUserCareer(res.data.result[0].career)
-  //     setUserPurpose(res.data.result[0].purpose)
+  useEffect(()=>{
+    switch (day) {
+      case ("mon"):
+        setKoreanDay("월")
+        break
+      case ("tue"):
+        setKoreanDay("화")
+        break
+      case ("wed"):
+        setKoreanDay("수")
+        break
+      case ("thur"):
+        setKoreanDay("목")
+        break
+      case ("fri"):
+        setKoreanDay("금")
+        break
+    }
+  }, [day])
 
-  //   }).catch((err)=>{console.log(err)})
+  useEffect(()=>{
+    axios.get(`${BASE_URL}/trainers/${trainerId}/thumbnail`).then((res)=>{
+      setTrainerImage(res.data[0].thumbnail)
+    }).catch((err)=>{console.log(err)})
+    
+    axios.get(`${BASE_URL}/trainers/${trainerId}`).then((res)=>{
+      console.log(res.data.result[0])
+      setTrainerName(res.data.result[0].name)
+      setTrainerAge(res.data.result[0].age)
+      setTrainerSex(res.data.result[0].sex)
+      setTrainerInsta(res.data.result[0].instagram)
+    }).catch((err)=>{console.log(err)})
 
-  //   switch (day) {
-  //     case ("mon"):
-  //       setKoreanDay("월")
-  //       break
-  //     case ("tue"):
-  //       setKoreanDay("화")
-  //       break
-  //     case ("wed"):
-  //       setKoreanDay("수")
-  //       break
-  //     case ("thur"):
-  //       setKoreanDay("목")
-  //       break
-  //     case ("fri"):
-  //       setKoreanDay("금")
-  //       break
-  //   }
-  // }, [])
+  }, [trainerId])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -111,45 +132,129 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
           : <Ionicons name="female" size={28} color="pink" />}
       </View>
       <View style={styles.separator}/>
-      <ScrollView>
+      <ScrollView style={{width: '100%'}}>
         <View style={styles.infoContainer}>
-          <View style={styles.infoInnerBox}>
+          <View style={styles.rowContainer}>
             <Text style={styles.infoTxtTitle}>나이</Text>
-            <Text style={styles.infoTxtTitle}>연락처</Text>
-            <Text style={styles.infoTxtTitle}>운동 경력</Text>
-            <Text style={styles.infoTxtTitle}>운동 목적</Text>
+            <Text style={styles.infoTxt}>{userAge}세</Text>
           </View>
-          <View style={styles.infoInnerBox}>
-            <Text style={styles.infoTxt}>{userAge}</Text>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>연락처</Text>
             <Text style={styles.infoTxt}>{userContact}</Text>
+          </View>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>운동 경력</Text>
             <Text style={styles.infoTxt}>{userCareer}</Text>
+          </View>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>운동 목적</Text>
             <Text style={styles.infoTxt}>{userPurpose}</Text>
           </View>
         </View>
-        <View style={styles.rowContainer}>
-          <Text style={styles.infoTxtTitle}>남은 횟수</Text>
-          <Text style={styles.infoTxt}>{remainingPT}회</Text>
-        </View>
-        <View style={styles.rowContainer}>
-          <Text style={styles.infoTxtTitle}>PT 시간</Text>
-          <Text style={styles.infoTxt}>{KoreanDay}요일 {time}시</Text>
-        </View>
-        <View style={styles.rowContainer}>
-          <Text style={styles.infoTxtTitle}>나의 트레이너</Text>
-          <Text style={styles.infoTxt}>{KoreanDay}요일 {time}시</Text>
-        </View>
-        <View style={styles.rowContainer}>
-          <Text style={styles.infoTxtTitle}>Memo</Text>
-        </View>
+        
+        {trainingStatus == "teaching" ?
+          <>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>나의 트레이너</Text>
+          </View>
+          <TouchableOpacity style={styles.trainerContainer}
+            onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId})}>
+            <Image
+              style={styles.trainerImg}
+              source={{uri: `data:image/png;base64,${trainerImage}`}}
+            />
+            <View style={styles.trainerInfoTxtBox}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.trainerTxtTitle}>{trainerName} 트레이너</Text>
+                {trainerSex == 'M'
+                ? <Ionicons name="male" size={24} color="skyblue" />
+                : <Ionicons name="female" size={24} color="pink" />}
+              </View>
+              
+              <Text style={styles.infoTxt}>{trainerAge}살</Text>
+              <Text style={styles.infoTxt}>@{trainerInsta}</Text>
+            </View>  
+          </TouchableOpacity>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>남은 횟수</Text>
+            <Text style={styles.infoTxt}>{remainingPT}회</Text>
+          </View>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>PT 시간</Text>
+            <Text style={styles.infoTxt}>{KoreanDay}요일 {time}시</Text>
+          </View>
 
-        <View style={styles.memoList}>
-          <FlatList
-            keyExtractor={item => String(item.id)}
-            data = {memoData}
-            horizontal = {true}
-            renderItem={({item}) => <PTMemoItem date={item.date} text={item.text}/>}
-          />
-        </View>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>운동 기록</Text>
+          </View>
+
+          <View style={styles.memoList}>
+            <FlatList
+              keyExtractor={item => String(item.id)}
+              data = {memoData}
+              horizontal = {true}
+              renderItem={({item}) => <PTMemoItem date={item.date} text={item.text}/>}
+            />
+          </View>
+
+          </>
+        : trainingStatus == "pending" ?
+          <>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>나의 트레이너</Text>
+            <View style={styles.btn}>
+              <Text>수락 대기중</Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.trainerContainer}
+            onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId})}>
+            <Image
+              style={styles.trainerImg}
+              source={{uri: `data:image/png;base64,${trainerImage}`}}
+            />
+            <View style={styles.trainerInfoTxtBox}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.trainerTxtTitle}>{trainerName} 트레이너</Text>
+                {trainerSex == 'M'
+                ? <Ionicons name="male" size={24} color="skyblue" />
+                : <Ionicons name="female" size={24} color="pink" />}
+              </View>
+              
+              <Text style={styles.infoTxt}>{trainerAge}살</Text>
+              <Text style={styles.infoTxt}>@{trainerInsta}</Text>
+
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.reqTxt}>신청한 PT 시간</Text>
+                <Text style={styles.infoTxt}>{KoreanDay}요일 {time}시</Text>
+              </View>
+            </View>  
+          </TouchableOpacity>
+          </>
+        : 
+          <>
+          <View style={styles.rowContainer}>
+            <Text style={styles.infoTxtTitle}>나의 트레이너</Text>
+          </View>
+          <TouchableOpacity style={[styles.trainerContainer,  {
+            flexDirection: 'column',
+            paddingLeft: 10,
+            justifyContent: 'center'
+          }]}
+            onPress={()=>navigation.navigate('UserTabOne')}>
+            <Text style={styles.infoTxt}>김PT에서 자신에게 맞는 트레이너를 찾아보세요!</Text>
+            <Text style={styles.infoTxt}>--커뮤니티 둘러보기--</Text> 
+          </TouchableOpacity>
+          </>
+        }
+        
+
+        
+
+        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.users}>로그아웃</Text>
+        </TouchableOpacity>
+
+
       </ScrollView>
       
       
@@ -163,7 +268,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8
+    padding: 8,
+    paddingBottom: 0,
   },
   title: {
     fontSize: 32,
@@ -178,8 +284,9 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 3,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignSelf: 'stretch',
+    padding: 16,
     backgroundColor: '#dddddd',
     marginVertical: 10,
     marginHorizontal: 10,
@@ -194,11 +301,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginVertical: 5,
-    marginRight: 10
+    marginRight: 15
   },
   infoTxt: {
     fontSize: 16,
     marginVertical: 5,
+  },
+  reqTxt: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginVertical: 5,
+    marginRight: 10
   },
   rowContainer: {
     flexDirection: 'row',
@@ -211,11 +324,39 @@ const styles = StyleSheet.create({
     flex: 5,
     alignSelf: 'flex-start',
     marginHorizontal: 10,
-    zIndex: -1
+    marginBottom: 10,
   },
   dateTxt: {
     fontSize: 20,
     fontWeight: '600'
+  },
+  trainerContainer: {
+    height: 150,
+    flex: 3,
+    flexDirection: 'row',
+    backgroundColor: '#dddddd',
+    padding: 10,
+    paddingLeft: 25,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  trainerImg: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginRight: 30
+  },
+  trainerInfoTxtBox:{
+    flexDirection: 'column'
+  },
+  trainerTxtTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 5,
+    marginRight: 5
   },
   memoInput: {
     height: 200,
@@ -240,5 +381,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center'
-  }
+  },
+  btn: {
+    width: 80,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'lightblue',
+    borderRadius: 20,
+    paddingHorizontal: 10
+  },
+  users: {
+    fontSize: 25,
+    margin: 5 
+  },
+  box: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    borderWidth: 3,
+    borderColor: 'white',
+    margin: 10,
+    padding: 10,
+    backgroundColor: 'lightblue'
+  },
 });
