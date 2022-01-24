@@ -1,13 +1,42 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GalleryList from "../components/GalleryList";
 import * as ImagePicker from 'expo-image-picker'
+import BASE_URL from "../components/BASE_URL";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from "axios";
 
 export default function NoonBodyScreen() {
   
   const [pickedImagePath, setPickedImagePath] = useState('');
-  const [arr, setArr] = useState<Array<Array<String>>>([])
+  const [arr, setArr] = useState<Array<Array<string>>>([])
+  const [id, setId] = useState('')
+
+  useEffect( () => {
+    getIdandUpdate()
+  }, [])
+
+  const getIdandUpdate = async () => {
+    try {
+      const value = await AsyncStorage.getItem('Id')
+      if(value != null) {
+        setId(value)
+        axios.get(`${BASE_URL}/images/user/${value}/noonbody`).then((res) => {
+          console.log(res);
+          let temp: string[][] = []
+          res.data.result.map((item) => {
+            if(item.type === 'noonbody') {
+              temp.push([item.image, item.date])
+            }
+          })
+          setArr([...temp])
+        })
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
 
   function parseDate(date: string): string {
       if(date === undefined) { return '0000.00.00' }    
@@ -30,18 +59,20 @@ export default function NoonBodyScreen() {
     if(!result.cancelled) {
       setPickedImagePath(result.base64!);
       setArr([...arr, [result.base64!, parseDate(result.exif?.DateTimeOriginal)]])
-      console.log(arr);
+      axios.post(`${BASE_URL}/images/user/${id}/noonbody`, {'image': result.base64, 'date': parseDate(result.exif?.DateTimeOriginal)}).then((res) => {
+        console.log(res);
+      })
     }
   }
 
-  function sortDate(arr: Array<Array<String>>) {
-    let cur: Array<String> = [] // contain calculated dates
-    let images: Array<[String, Array<String>]> = [] // sort of images;
+  function sortDate(arr: Array<Array<string>>) {
+    let cur: Array<string> = [] // contain calculated dates
+    let images: Array<[string, Array<string>]> = [] // sort of images;
     for(var i=0; i< arr.length ; i++) {
       if(!cur.includes(arr[i][1])) {
         cur.push(arr[i][1]) // push calculated date
 
-        let temp: Array<String> = []
+        let temp: Array<string> = []
         for(var j=0; j<arr.length ; j++) {
           if(arr[j][1] === arr[i][1]) {
             temp.push(arr[j][0])

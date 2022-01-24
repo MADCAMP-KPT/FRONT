@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react"
 
 
 export default function GalleryList({imageData, date, arr, setArr}:
-   {imageData: Array<String>, date: String, arr: String[][], setArr: Dispatch<SetStateAction<String[][]>>}) {
+   {imageData: Array<string>, date: string, arr: string[][], setArr: Dispatch<SetStateAction<string[][]>>}) {
 
   return (
     <View style={styles.container}>
