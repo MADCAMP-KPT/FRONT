@@ -1,4 +1,3 @@
-//<reference path="../navigation/types.d.ts"/>
 import axios from 'axios';
 import * as WebBrowser from 'expo-web-browser';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from "react-native";
@@ -8,13 +7,11 @@ import BASE_URL from '../components/BASE_URL';
 import { useEffect, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-// import * as DocumentPicker from 'expo-document-picker';
-// import FormData from 'formdata'
-// import ImagePicker from 'react-native-image-crop-picker'
 
 export default function TrainerMyPageScreen({navigation, route}: RootTabScreenProps<'TabThree'>) {
 
   const ImageData : Array<String> = Array(10).fill('https://reactnative.dev/img/tiny_logo.png');
+  const [imgList, setImgList] = useState<String[]>([])
 
   const [name, setName] = useState('')
   const [sex, setSex] = useState('남')
@@ -24,6 +21,7 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
   const [instagram, setInst] = useState('')
   const [career, setCareer] = useState('')
   const [intro, setIntro] = useState('')
+  const [id, setId] = useState('')
 
   const [pickedImagePath, setPickedImagePath] = useState('');
 
@@ -35,42 +33,30 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
       return;
     }
   
-    const result = await ImagePicker.launchImageLibraryAsync({base64: true});
+    const result = await ImagePicker.launchImageLibraryAsync({base64: true, quality: 0});
   
     if(!result.cancelled) {
       setPickedImagePath(result.base64!);
-      // let file = {
-      //         uri: result.uri,
-      //         type: 'multipart/form-data',
-      //         name: 'image.jpg',
-      // }
-      // const data = new FormData()
-      // data.append("thumbnail", file);
-      axios.put(`${BASE_URL}/trainers/18/thumbnail`, {'thumbnail': result.base64})
+      console.log(result.base64);
+      axios.put(`${BASE_URL}/trainers/${id}/thumbnail`, {'thumbnail': result.base64})
       .then((res) => console.log(res)).catch((err) => console.log(err)) 
     }
   }
 
-  // const showImagePicker = () => {
-  //   ImagePicker.openPicker({
-  //     width: 300,
-  //     height: 400,
-  //     cropping: true
-  //   }).then(image => {
-  //     console.log(image);
-  //     const imageFormData = new FormData();
-  //     let file = {
-  //       uri: image.path,
-  //       type: 'multipart/form-data',
-  //       name: 'image.png'
-  //     }
-  //     imageFormData.append('thumbnail', JSON.stringify(file))
-      
-  //     axios.put(`${BASE_URL}/trainers/18/thumbnail`, imageFormData, {headers: {'content-type' : 'multipart/form-data'}}).then((res) => console.log(res))
-  //   })
-  // }
-
-
+  const showImagePicker2 = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  
+    if(permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+  
+    const result = await ImagePicker.launchImageLibraryAsync({base64: true, quality: 0});
+  
+    if(!result.cancelled) {
+      setImgList([...imgList, result.base64!])
+    }
+  } 
 
   useEffect(() => {
     getIdandUpdate()
@@ -81,7 +67,7 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
       const value = await AsyncStorage.getItem('Id')
       if(value != null) {
         axios.get(`${BASE_URL}/trainers/${value}`).then((res) => {
-          console.log(res);
+          setId(value)
           setName(res.data.result[0].name)
           setSex(res.data.result[0].sex)
           setAge(res.data.result[0].age)
@@ -91,10 +77,11 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
           axios.get(`${BASE_URL}/gyms/${res.data.result[0].gym_id}`).then((res) => {
             setCity(res.data.result[0].city)
             setCompany(res.data.result[0].name)
-            axios.get(`${BASE_URL}/trainers/18/thumbnail`).then((res) => {
+            axios.get(`${BASE_URL}/trainers/${value}/thumbnail`).then((res) => {
               console.log(res);
               setPickedImagePath(res.data[0].thumbnail)
-            })
+              // require: GET trainer's noonbody method
+            }).catch((err) => console.log(err))
           })
         })
       }
@@ -143,21 +130,37 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
           <View style={styles.input}>
             <Text style={styles.text}>Instagram</Text>
             <TouchableOpacity onPress={() => 
-              WebBrowser.openBrowserAsync('https://instagram.com/ddungiii?utm_medium=copy_link')}>
+              WebBrowser.openBrowserAsync(`https://instagram.com/${instagram}`)}>
               <Text style={{color:'blue', fontSize: 25}}>@{instagram}</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.box}>
-          <Text style={styles.users}>기영's 눈바디</Text>
+          <Text style={styles.users}>+눌러서 본인 사진 추가</Text>
+          <TouchableOpacity style={{alignSelf: 'center'}} onPress={showImagePicker2}>
+            <AntDesign name="pluscircle" size={24} color="black" />
+          </TouchableOpacity>
           <ScrollView horizontal={true}>
-            {ImageData.map((item, index) => {
-               return (
-                 <TouchableOpacity key={index}>
-                  <Image style={styles.tinyLogo} source={{uri: `${item}`}} />
-                 </TouchableOpacity>
-               )
-            })} 
+            {(imgList.length === 0) ? 
+              <View style={styles.container}>
+                <Text style={{fontSize:32}}>사진을 추가해 보세요!</Text>
+              </View>
+              :
+              imgList.map((img, i) => {
+                return (
+                  <TouchableOpacity key={i} onPress={() => {
+                    for(var k = 0; k < imgList.length ; k ++ ) {
+                      if(imgList[k] === img) {
+                        return setImgList(arr => arr.filter((img, i) => i != k))
+                      }
+                    }
+                    return
+                  }}>
+                    <Image style={styles.noonBody} source={{uri: `data:image/png;base64,${img}`}} />
+                  </TouchableOpacity>
+                )
+              })
+            }
           </ScrollView>
         </View>
           <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Login')}>
@@ -176,6 +179,12 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 100,
+    margin: 20
+  },
+  noonBody: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
     margin: 20
   },
   logo: {
