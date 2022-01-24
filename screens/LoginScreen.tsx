@@ -19,7 +19,7 @@ export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>)
     if(checked === 'User') {
       axios.post('http://192.249.18.145:443/users/login', json).then((res) => {
         if(res.data.result.length == 0) {
-          alert('존재하지 않는 회원입니다.')
+          Alert.alert('알림', '존재하지 않는 회원입니다.', [{text: '확인', style: 'cancel'}])
         } else {
           storeId(res.data.result[0].id)
           navigation.navigate('UserRoot')
@@ -29,7 +29,7 @@ export default function LoginScreen({navigation}: RootStackScreenProps<'Login'>)
       axios.post('http://192.249.18.145:443/trainers/login', json).then((res) => {
         console.log(res.data);
         if(res.data.result.length == 0) {
-          alert('존재하지 않는 회원입니다.')
+          Alert.alert('알림', '존재하지 않는 회원입니다.', [{text: '확인', style: 'cancel'}])
         } else {
           console.log(res.data.result[0].insertId);
           storeId(res.data.result[0].id)

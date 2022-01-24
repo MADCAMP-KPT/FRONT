@@ -53,6 +53,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+// Add (screenOptions for navigator ||  options for screen)={{gestureEnabled: false}} <== prevent slide going back action.
 function RootNavigator() {
   return (
     <Stack.Navigator>
@@ -60,8 +61,8 @@ function RootNavigator() {
       <Stack.Screen name="Signin" component={SigninScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TrainerSurvey" component={TrainerSurveyScreen} options={{headerShown: false}}/>
       <Stack.Screen name="UserSurvey" component={UserSurveyScreen} options={{headerShown: false}} />
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="UserRoot" component={UserBottomTabNavigator} options={{headerShown: false}} />
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false, gestureEnabled: false }} />
+      <Stack.Screen name="UserRoot" component={UserBottomTabNavigator} options={{headerShown: false, gestureEnabled: false}} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="UserDetail" component={UserDetailScreen} options={{headerShown: false}}/>
       <Stack.Screen name="UserCommunityDetail" component={UserCommunityDetailScreen} options={{headerShown: false}}/>

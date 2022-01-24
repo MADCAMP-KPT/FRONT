@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, ScrollView, Alert } from "react-native";
 import { useState, useEffect } from 'react'
 import { RadioButton } from "react-native-paper";
 import { RootStackScreenProps } from "../types";
@@ -12,10 +12,10 @@ export default function TrainerSurveyScreen({route, navigation}: RootStackScreen
 
   const {trainerId, trainerPw} = route.params
   const [name, setName] = useState('')
-  const [sex, setSex] = useState('남')
+  const [sex, setSex] = useState('M')
   const [age, setAge] = useState(25)
   const [city, setCity] = useState('서울')
-  const [company, setCompany] = useState('')
+  const [company, setCompany] = useState('짐인더하우스')
   const [instagram, setInst] = useState('')
   const [career, setCareer] = useState('')
   const [intro, setIntro] = useState('')
@@ -44,14 +44,18 @@ export default function TrainerSurveyScreen({route, navigation}: RootStackScreen
   }, [city])
 
   const onComplete = () => {
-    let json = {"login_id": trainerId, "login_pw": trainerPw, "name": name, "sex": sex, 
-                "age": age, "gym_city": city, "gym_name": company, "instagram": instagram,
-                "career": career, "intro": intro}
-    axios.post('http://192.249.18.145:443/trainers/register', json).then((res) => {
-        console.log(res);
-        storeId(res.data.result.insertId)
-        navigation.navigate('Root')
-    }).catch((err) => console.log(err))
+      if(name === '' || instagram === '' || career === '' || intro === '') {
+        Alert.alert('알림', '모든 항목을 입력해주세요', [{text: '확인', style: 'cancel'}])
+      } else {
+        let json = {"login_id": trainerId, "login_pw": trainerPw, "name": name, "sex": sex, 
+                    "age": age, "gym_city": city, "gym_name": company, "instagram": instagram,
+                    "career": career, "intro": intro}
+        axios.post('http://192.249.18.145:443/trainers/register', json).then((res) => {
+            console.log(res);
+            storeId(res.data.result.insertId)
+            navigation.navigate('Root')
+        }).catch((err) => console.log(err))
+      }
   }
 
   return(

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, Alert } from "react-native";
 import { useState } from 'react'
 import { RadioButton } from "react-native-paper";
 import { RootStackScreenProps } from "../types";
@@ -17,13 +17,17 @@ export default function UserSurveyScreen({route, navigation}: RootStackScreenPro
   const [purpose, setPurpose] = useState('')
 
   const onComplete = () => {
-    let json = {"login_id": userId, "login_pw": userPw, "name": name, "sex": sex, "age": age,
-                "contact": contact, "career": career, "purpose": purpose}
-    axios.post('http://192.249.18.145:443/users/register', json).then((res) => {
-      console.log(res);
-      storeId(res.data.result.insertId)
-      navigation.navigate('UserRoot')
-    }).catch((err) => console.log(err))
+    if(name === '' || contact === '' || career === '' || purpose === '') {
+      Alert.alert('알림', '모든 항목을 입력해주세요', [{text: '확인', style: 'cancel'}])
+    } else{
+      let json = {"login_id": userId, "login_pw": userPw, "name": name, "sex": sex, "age": age,
+      "contact": contact, "career": career, "purpose": purpose}
+      axios.post('http://192.249.18.145:443/users/register', json).then((res) => {
+        console.log(res);
+        storeId(res.data.result.insertId)
+        navigation.navigate('UserRoot')
+      }).catch((err) => console.log(err))
+    }
   }
 
   return(

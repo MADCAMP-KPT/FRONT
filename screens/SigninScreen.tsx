@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 import { RootStackScreenProps } from "../types";
 import { RadioButton } from "react-native-paper";
 import { useState } from 'react'
@@ -13,10 +13,10 @@ export default function SigninScreen({navigation}: RootStackScreenProps<'Signin'
   // (checked === 'User') ? navigation.navigate('UserSurvey') : navigation.navigate('TrainerSurvey')
   const onSign = () => {
     if(id === '' || pw === '') {
-      return alert('아이디/비밀번호를 입력해주세요.')
+      return Alert.alert('알림', '아이디/비밀번호를 입력해주세요.', [{text: '확인', style: 'cancel'}])
     }
     else if(pw !== chkpw) {
-      return alert('비밀번호를 확인해 주세요')
+      return Alert.alert('알림', '아이디/비밀번호를 입력해주세요.', [{text: '확인', style: 'cancel'}])
     }
 
     if(checked === 'User') {
@@ -26,7 +26,7 @@ export default function SigninScreen({navigation}: RootStackScreenProps<'Signin'
        if(res.data.result[0].isValidUserId) {
         navigation.navigate('UserSurvey', {userId: id, userPw: pw})
        } else {
-         alert('중복된 아이디입니다.')
+         Alert.alert('알림', '중복된 아이디입니다.', [{text: '확인', style: 'cancel'}])
        }
       //  
      }).catch((err) => console.log(err)) 
@@ -36,7 +36,7 @@ export default function SigninScreen({navigation}: RootStackScreenProps<'Signin'
         if(res.data.result[0].isValidTrainerId) {
           navigation.navigate('TrainerSurvey', {trainerId: id, trainerPw: pw})
         } else {
-          alert('중복된 아이디입니다.')
+          Alert.alert('알림', '중복된 아이디입니다.', [{text: '확인', style: 'cancel'}])
         }
       }).catch((err) => console.log(err))
     }
