@@ -198,7 +198,10 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
     <View style={styles.container}>
       <View style={styles.rowTitleBox}>
         <Text style={styles.title}>{trainerName} 트레이너</Text>
-        <TouchableOpacity style={styles.btnRequest}>
+        <TouchableOpacity
+          style={styles.btnRequest}
+          onPress={()=>navigation.navigate('UserApply', {trainerId: trainerId})}
+        >
           <Text style={styles.btnTxt}>신청하기</Text>
           {/* todo : 신청하기 버튼을 space-btw 하는 법? */}
         </TouchableOpacity>

@@ -56,7 +56,7 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
         columnWrapperStyle={styles.columnWrapper}
         keyExtractor={(item, index) => String(item.trainerId)}
         data = {trainerList}
-        renderItem={({item}) => <UserCommuTrainerListItem trainerId={item.trainerId} trainerName={item.trainerName}/>}
+        renderItem={({item}) => <UserCommuTrainerListItem trainerId={item.trainerId} trainerName={item.trainerName} gymName={gymName}/>}
       />
     </View>
   )
