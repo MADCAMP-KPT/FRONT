@@ -55,7 +55,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
   const halfCircle = radius+strokeWidth;
   const circleCircumference = 2*Math.PI*radius;
   const animatedValue = React.useRef(new Animated.Value(0)).current;
-  const circleRef = React.useRef();
+  const circleRef = React.useRef<View>(null);
   const AnimatedCircle = Animated.createAnimatedComponent(Circle);
   const [percentage, setPercentage] = React.useState(0);
   const duration = 700;
@@ -74,7 +74,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
         console.log(err)
       })
 
-    axios.get(`${BASE_URL}/trainers/${trainerId}/thumbnail`, )
+    axios.get(`${BASE_URL}/trainers/${trainerId}/thumbnail`)
       .then(
       res => {
     //     console.log(res.data);
@@ -97,7 +97,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
         // setTrainerImg(photoURI);
         // console.log(trainerImg);
       }    
-    )
+    ).catch((err) => console.log(err))
 
     // RNFetchBlob.fetch('GET', 'http://192.249.18.145:443/trainers/29/thumbnail').then(
     //   res => {

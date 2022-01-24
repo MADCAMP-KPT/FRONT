@@ -38,7 +38,7 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
             })
           )
         }
-      )
+      ).catch((err) => console.log(err))
   }, [])
 
   
