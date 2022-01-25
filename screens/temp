@@ -1,0 +1,127 @@
+<View style={styles.box}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>{name} 트레이너님</Text>
+            <TouchableOpacity style={{alignSelf: 'center', marginLeft: 10}} onPress={showImagePicker}>
+              <AntDesign name="pluscircle" size={30} color="black" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.container}>
+            <Image style={styles.tinyLogo} source={{uri: `data:image/png;base64,${pickedImagePath}`}}/>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>이름</Text>
+            <Text style={styles.users}>{name}</Text>
+          </View>
+          <View style={styles.inputWithoutIndex}>
+            <Text style={styles.text}>지역</Text>
+            <Text style={styles.users}>{city}</Text>
+          </View>
+          <View style={styles.inputWithoutIndex}>
+            <Text style={styles.text}>소속</Text>
+            <Text style={styles.users}>{company}</Text>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>성별</Text>
+            <Text style={styles.users}>{(sex === 'M' ? '남성': '여성')}</Text>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>나이</Text>
+            <Text style={styles.users}>{age} 세</Text>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>한줄소개</Text>
+            <Text style={styles.users}>{intro}</Text>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>경력</Text>
+            <Text style={styles.users}>{career}</Text>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>Instagram</Text>
+            <TouchableOpacity onPress={() => 
+              WebBrowser.openBrowserAsync(`https://instagram.com/${instagram}`)}>
+              <Text style={{color:'blue', fontSize: 20}}>@{instagram}</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.button} onPress={() => setEdit(true)}>
+            <Text style={{fontSize: 15, color: 'black'}}>프로필 수정</Text>
+          </TouchableOpacity>
+        </View>
+
+
+==============================================================================
+
+
+<View style={styles.box}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>{name} 트레이너님</Text>
+            <TouchableOpacity style={{alignSelf: 'center', marginLeft: 10}} onPress={showImagePicker}>
+              <AntDesign name="pluscircle" size={30} color="black" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.container}>
+            <Image style={styles.tinyLogo} source={{uri: `data:image/png;base64,${pickedImagePath}`}}/>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>이름</Text>
+            <Text style={styles.users}>{name}</Text>
+          </View>
+          <View style={styles.inputWithoutIndex}>
+            <Text style={styles.text}>지역</Text>
+            <ScrollView horizontal={true} >
+            <RadioButton.Group onValueChange={newValue => setCity(newValue)} value={city}>
+            <View style={{flexDirection: 'row'}}>
+                {cityList.map((item, i) => {
+                    return <RadioButton.Item key={i} style={styles.cities} label={item} value={item} color={'black'} />
+                })}
+            </View>
+            </RadioButton.Group>
+            </ScrollView>
+          </View>
+          <View style={styles.inputWithoutIndex}>
+            <Text style={styles.text}>소속</Text>
+            <DropdownMenu
+              style={{flex: 1}}
+              bgColor={'white'}
+              activityTintColor={'skyblue'}
+              optionTextStyle={{color: 'green', fontSize: 15}}
+              titleStyle={{color: 'green', fontSize: 20, fontWeight: 'bold'}} 
+              data={companyList}
+              
+              // maxHeight={100}
+              handler={(selection, row) => setCompany((companyList)[selection][row])}>
+          </DropdownMenu>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>성별</Text>
+            <Text style={styles.users}>{(sex === 'M' ? '남성': '여성')}</Text>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>나이</Text>
+            <Text style={styles.users}>{age} 세</Text>
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>한줄소개</Text>
+            <TextInput style={styles.multiinput} placeholder=' 자유롭게 자신을 소개해주세요' multiline={true} value={intro} onChangeText={setIntro} />
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>경력</Text> 
+            <TextInput style={styles.multiinput} placeholder=' ex) 수상경력, 근무이력 등' multiline={true} value={career} onChangeText={setCareer} />
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.text}>Instagram</Text>
+            <TextInput style={styles.tinput} placeholder='instagram' value={instagram} onChangeText={setInst} />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.button} onPress={() => setEdit(false)}>
+             <Text style={{fontSize: 15, color: 'black'}}>취소</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => {
+              axios.put(`${BASE_URL}/trainers/${id}`, {"instagram": instagram, "career": career, "intro": intro, "gym_city": city, "gym_name": company})
+              .then((res) => console.log(res))
+              setEdit(false)
+              }}>
+             <Text style={{fontSize: 15, color: 'black'}}>적용</Text>
+            </TouchableOpacity>
+          </View>
+        </View>

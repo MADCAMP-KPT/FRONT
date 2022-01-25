@@ -123,6 +123,7 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
   return (
     <SafeAreaView>
       <ScrollView>
+        {edit? 
         <View style={styles.box}>
           <View style={{flexDirection: 'row'}}>
             <Text style={{fontSize: 30, fontWeight: 'bold'}}>{name} 트레이너님</Text>
@@ -133,43 +134,85 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
           <View style={styles.container}>
             <Image style={styles.tinyLogo} source={{uri: `data:image/png;base64,${pickedImagePath}`}}/>
           </View>
+          <View style={styles.editbox}>
+            <Text style={styles.text}>Edit Profile</Text>
+            <View style={styles.inputWithoutIndex}>
+              <Text style={styles.text}>지역</Text>
+              <ScrollView horizontal={true} >
+              <RadioButton.Group onValueChange={newValue => setCity(newValue)} value={city}>
+              <View style={{flexDirection: 'row'}}>
+                  {cityList.map((item, i) => {
+                      return <RadioButton.Item key={i} style={styles.cities} label={item} value={item} color={'black'} />
+                  })}
+              </View>
+              </RadioButton.Group>
+              </ScrollView>
+            </View>
+            <View style={styles.inputWithoutIndex}>
+              <Text style={styles.text}>소속</Text>
+              <DropdownMenu
+                style={{flex: 1}}
+                bgColor={'white'}
+                activityTintColor={'skyblue'}
+                optionTextStyle={{color: 'green', fontSize: 15}}
+                titleStyle={{color: 'green', fontSize: 20, fontWeight: 'bold'}} 
+                data={companyList}
+                
+                // maxHeight={100}
+                handler={(selection, row) => setCompany((companyList)[selection][row])}>
+            </DropdownMenu>
+            </View>
+            <View style={styles.input}>
+              <Text style={styles.text}>한줄 소개 </Text>
+              <TextInput style={styles.multiinput} placeholder=' 자유롭게 자신을 소개해주세요' multiline={true} value={intro} onChangeText={setIntro} />
+            </View>
+            <View style={styles.input2}>
+              <Text style={styles.text}>경력     </Text> 
+              <TextInput style={styles.multiinput} placeholder=' ex) 수상경력, 근무이력 등' multiline={true} value={career} onChangeText={setCareer} />
+            </View>
+            <View style={styles.input}>
+              <Text style={styles.text}>Instagram</Text>
+              <TextInput style={styles.tinput} placeholder='instagram' value={instagram} onChangeText={setInst} />
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.button} onPress={() => setEdit(false)}>
+            <Text style={{fontSize: 15, color: 'black'}}>취소</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => {
+              axios.put(`${BASE_URL}/trainers/${id}`, {"instagram": instagram, "career": career, "intro": intro, "gym_city": city, "gym_name": company})
+              .then((res) => console.log(res))
+              setEdit(false)
+              }}>
+            <Text style={{fontSize: 15, color: 'black'}}>적용</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        :
+
+        <View style={styles.box}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>{name} 트레이너님</Text>
+            <TouchableOpacity style={{alignSelf: 'center', marginLeft: 10}} onPress={showImagePicker}>
+              <AntDesign name="pluscircle" size={30} color="black" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.container}>
+            <Image style={styles.tinyLogo} source={{uri: `data:image/png;base64,${pickedImagePath}`}}/>
+          </View>
+          <View>
           <View style={styles.input}>
             <Text style={styles.text}>이름</Text>
             <Text style={styles.users}>{name}</Text>
           </View>
           <View style={styles.inputWithoutIndex}>
             <Text style={styles.text}>지역</Text>
-            {edit? 
-            <ScrollView horizontal={true} >
-            <RadioButton.Group onValueChange={newValue => setCity(newValue)} value={city}>
-            <View style={{flexDirection: 'row'}}>
-                {cityList.map((item, i) => {
-                    return <RadioButton.Item key={i} style={styles.cities} label={item} value={item} color={'black'} />
-                })}
-            </View>
-            </RadioButton.Group>
-            </ScrollView>
-            :
             <Text style={styles.users}>{city}</Text>
-            }
           </View>
           <View style={styles.inputWithoutIndex}>
             <Text style={styles.text}>소속</Text>
-            {edit?
-            <DropdownMenu
-              style={{flex: 1}}
-              bgColor={'white'}
-              activityTintColor={'skyblue'}
-              optionTextStyle={{color: 'green', fontSize: 15}}
-              titleStyle={{color: 'green', fontSize: 20, fontWeight: 'bold'}} 
-              data={companyList}
-              
-              // maxHeight={100}
-              handler={(selection, row) => setCompany((companyList)[selection][row])}>
-          </DropdownMenu>
-            :
             <Text style={styles.users}>{company}</Text>
-            }
           </View>
           <View style={styles.input}>
             <Text style={styles.text}>성별</Text>
@@ -181,50 +224,25 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
           </View>
           <View style={styles.input}>
             <Text style={styles.text}>한줄소개</Text>
-            {edit? 
-            <TextInput style={styles.multiinput} placeholder=' 자유롭게 자신을 소개해주세요' multiline={true} value={intro} onChangeText={setIntro} />
-            :
             <Text style={styles.users}>{intro}</Text>
-            }
           </View>
           <View style={styles.input}>
             <Text style={styles.text}>경력</Text>
-            {edit? 
-            <TextInput style={styles.multiinput} placeholder=' ex) 수상경력, 근무이력 등' multiline={true} value={career} onChangeText={setCareer} />
-            : 
             <Text style={styles.users}>{career}</Text>
-            } 
           </View>
           <View style={styles.input}>
             <Text style={styles.text}>Instagram</Text>
-            {edit? 
-            <TextInput style={styles.tinput} placeholder='instagram' value={instagram} onChangeText={setInst} />
-            :
             <TouchableOpacity onPress={() => 
               WebBrowser.openBrowserAsync(`https://instagram.com/${instagram}`)}>
               <Text style={{color:'blue', fontSize: 20}}>@{instagram}</Text>
             </TouchableOpacity>
-            }
           </View>
-          {edit? 
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={styles.button} onPress={() => setEdit(false)}>
-             <Text style={{fontSize: 15, color: 'black'}}>취소</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {
-              axios.put(`${BASE_URL}/trainers/${id}`, {"instagram": instagram, "career": career, "intro": intro, "gym_city": city, "gym_name": company})
-              .then((res) => console.log(res))
-              setEdit(false)
-              }}>
-             <Text style={{fontSize: 15, color: 'black'}}>적용</Text>
-            </TouchableOpacity>
           </View>
-          : 
           <TouchableOpacity style={styles.button} onPress={() => setEdit(true)}>
             <Text style={{fontSize: 15, color: 'black'}}>프로필 수정</Text>
           </TouchableOpacity>
-          }
         </View>
+        }
         <View style={styles.box}>
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.users}>눈바디</Text>
@@ -294,6 +312,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: -5
   },
+  input2: {
+    flexDirection: 'row',
+    margin: 5,
+    marginLeft: 25,
+    padding: 5,
+    alignItems: 'center',
+    zIndex: -5
+  },
   inputWithoutIndex: {
     flexDirection: 'row',
     margin: 5,
@@ -317,6 +343,15 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#ffffff'
   },
+  editbox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 340,
+    borderRadius: 20,
+    margin: 10,
+    padding: 10,
+    backgroundColor: '#dddddd'
+  },
   touch: {
     width: '40%',
     alignItems: 'center',
@@ -339,6 +374,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     fontSize: 15,
     margin: 5,
+    marginLeft: 10,
     borderWidth: 1,
     borderRadius: 5
   },
