@@ -136,13 +136,15 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
           ? <Ionicons name="male" size={28} color="skyblue" />
           : <Ionicons name="female" size={28} color="pink" />}
         {edit? 
-        <TouchableOpacity style={{justifyContent: 'flex-end', backgroundColor: 'skyblue', borderRadius: 10, padding: 10}} onPress={() => setEdit(false)}>
+        <TouchableOpacity style={{justifyContent: 'flex-end', backgroundColor: 'skyblue', borderRadius: 10, padding: 10}} onPress={() => {
+          axios.put(`${BASE_URL}/users/${id}`, {"contact": userContact, "career": userCareer, "purpose": userPurpose})
+              .then((res) => console.log(res))
+          setEdit(false)
+        }}>
           <Text>수정 완료</Text>
         </TouchableOpacity>
         :
         <TouchableOpacity style={{justifyContent: 'flex-end'}} onPress={() => {
-          axios.put(`${BASE_URL}/users/${id}`, {"contact": userContact, "career": userCareer, "purpose": userPurpose})
-              .then((res) => console.log(res))
           setEdit(true)
           }}>
           <AntDesign name="edit" size={24} color="black" />
