@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, Alert } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, Alert, TextInput } from 'react-native';
 import PTMemoItem from '../components/PTMemoItem';
 import { AntDesign, Ionicons  } from '@expo/vector-icons';
 import { UserTabScreenProps } from '../types';
@@ -18,6 +18,7 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
   const [userContact, setUserContact] = useState("")
   const [userCareer, setUserCareer] = useState("")
   const [userPurpose, setUserPurpose] = useState("")
+  const [id, setId] = useState("")
 
   const [remainingPT, setRemainingPT] = useState(0)
   const [day, setDay] = useState("")
@@ -46,6 +47,7 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
     try {
       const userId = await AsyncStorage.getItem('Id')
       if (userId != null) {
+        setId(userId)
         axios.get(`${BASE_URL}/users/${userId}`).then((res) => {
           console.log(res.data.result[0])
           setUserName(res.data.result[0].name)
@@ -124,6 +126,8 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
 
   }, [trainerId])
 
+  const [edit, setEdit] = useState(false)
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.rowContainer}>
@@ -131,9 +135,38 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
         {userSex == 'M'
           ? <Ionicons name="male" size={28} color="skyblue" />
           : <Ionicons name="female" size={28} color="pink" />}
+        {edit? 
+        <TouchableOpacity style={{justifyContent: 'flex-end', backgroundColor: 'skyblue', borderRadius: 10, padding: 10}} onPress={() => setEdit(false)}>
+          <Text>수정 완료</Text>
+        </TouchableOpacity>
+        :
+        <TouchableOpacity style={{justifyContent: 'flex-end'}} onPress={() => {
+          axios.put(`${BASE_URL}/users/${id}`, {"contact": userContact, "career": userCareer, "purpose": userPurpose})
+              .then((res) => console.log(res))
+          setEdit(true)
+          }}>
+          <AntDesign name="edit" size={24} color="black" />
+        </TouchableOpacity>
+        }
       </View>
       <View style={styles.separator}/>
       <ScrollView style={{width: '100%'}}>
+        {edit?
+        <View style={styles.infoContainer}>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>연락처</Text>
+          <TextInput style={styles.infoTxt1} placeholder='연락처' value={userContact} onChangeText={setUserContact} />
+        </View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>운동 경력</Text>
+          <TextInput style={styles.infoTxt1} placeholder='운동 경력' value={userCareer} onChangeText={setUserCareer} />
+        </View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>운동 목적</Text>
+          <TextInput style={styles.infoTxt1} placeholder='운동 목적' value={userPurpose} onChangeText={setUserPurpose} />
+        </View>
+        </View>
+        :
         <View style={styles.infoContainer}>
           <View style={styles.rowContainer}>
             <Text style={styles.infoTxtTitle}>나이</Text>
@@ -152,6 +185,7 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
             <Text style={styles.infoTxt}>{userPurpose}</Text>
           </View>
         </View>
+        }
         
         {trainingStatus == "teaching" ?
           <>
@@ -308,6 +342,13 @@ const styles = StyleSheet.create({
   infoTxt: {
     fontSize: 16,
     marginVertical: 5,
+  },
+  infoTxt1: {
+    fontSize: 16,
+    marginVertical: 5,
+    backgroundColor: '#ffffff',
+    padding: 10,
+    borderRadius: 20
   },
   reqTxt: {
     fontSize: 16,
