@@ -99,10 +99,12 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
     <SafeAreaView>
       <ScrollView>
         <View style={styles.box}>
-          <Text style={{fontSize: 30, fontWeight: 'bold'}}>{name} 트레이너님</Text>
-          <TouchableOpacity style={{alignSelf: 'center'}} onPress={showImagePicker}>
-            <AntDesign name="pluscircle" size={48} color="black" />
-          </TouchableOpacity>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>{name} 트레이너님</Text>
+            <TouchableOpacity style={{alignSelf: 'center', marginLeft: 10}} onPress={showImagePicker}>
+              <AntDesign name="pluscircle" size={30} color="black" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.container}>
             <Image style={styles.tinyLogo} source={{uri: `data:image/png;base64,${pickedImagePath}`}}/>
           </View>
@@ -138,15 +140,17 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
             <Text style={styles.text}>Instagram</Text>
             <TouchableOpacity onPress={() => 
               WebBrowser.openBrowserAsync(`https://instagram.com/${instagram}`)}>
-              <Text style={{color:'blue', fontSize: 25}}>@{instagram}</Text>
+              <Text style={{color:'blue', fontSize: 20}}>@{instagram}</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.box}>
-          <Text style={styles.users}>+눌러서 본인 사진 추가</Text>
-          <TouchableOpacity style={{alignSelf: 'center'}} onPress={showImagePicker2}>
-            <AntDesign name="pluscircle" size={24} color="black" />
-          </TouchableOpacity>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.users}>눈바디</Text>
+            <TouchableOpacity style={{alignSelf: 'center', marginLeft: 10}} onPress={showImagePicker2}>
+              <AntDesign name="pluscircle" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
           <ScrollView horizontal={true}>
             {(imgList.length === 0) ? 
               <View style={styles.container}>
@@ -159,6 +163,8 @@ export default function TrainerMyPageScreen({navigation, route}: RootTabScreenPr
                   {text: '네', onPress: () => {
                     for(var k = 0; k < imgList.length ; k ++ ) {
                       if(imgList[k] === img) {
+                        axios.delete(`${BASE_URL}/images/trainer`, {data: {'image': img}}).then((res) => {
+                        }).catch((err) => console.log(err))
                         return setImgList(arr => arr.filter((img, i) => i != k))
                       }
                     }
@@ -202,17 +208,17 @@ const styles = StyleSheet.create({
   },
   input: {
     flexDirection: 'row',
-    margin: 10,
+    margin: 5,
     padding: 5,
     alignItems: 'center'
   },
   text: {
     textDecorationLine: 'underline',
-    fontSize: 25,
+    fontSize: 20,
     margin: 5
   },
   users: {
-    fontSize: 25,
+    fontSize: 20,
     margin: 5 
   },
   box: {

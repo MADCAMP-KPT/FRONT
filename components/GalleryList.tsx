@@ -1,5 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, Alert } from "react-native"
 import { Dispatch, SetStateAction } from "react"
+import BASE_URL from "./BASE_URL"
+import axios from 'axios'
 
 
 export default function GalleryList({imageData, date, arr, setArr}:
@@ -16,6 +18,9 @@ export default function GalleryList({imageData, date, arr, setArr}:
           {text: '네', onPress: () => {
             for(var k = 0; k < arr.length ; k++) {
               if(arr[k][0] === item && arr[k][1] === date) {
+                axios.delete(`${BASE_URL}/images/user`, {data: {'image': item}}).then((res) => {
+                  console.log(res);
+                }).catch((err) => console.log(err))
                 return setArr(arr => arr.filter((item, i) => i != k))
               }
             }
