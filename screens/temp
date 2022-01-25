@@ -125,3 +125,10 @@
             </TouchableOpacity>
           </View>
         </View>
+
+
+
+
+
+        axios.put(`${BASE_URL}/users/${id}`, {"contact": userContact, "career": userCareer, "purpose": userPurpose})
+              .then((res) => console.log(res))
