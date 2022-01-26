@@ -6,10 +6,12 @@ import { Buffer } from 'buffer';
 import axios from "axios";
 import BASE_URL from "../components/BASE_URL";
 
-export default function UserCommuTrainerListItem({trainerId, trainerName, gymName}:{
+export default function UserCommuTrainerListItem({trainerId, trainerName, gymName, ratingUpdate, setRatingUpdate}:{
   trainerId : number,
   trainerName : String,
   gymName : String,
+  ratingUpdate: any,
+  setRatingUpdate : any,
 }) {
 
   const navigation = useNavigation()
@@ -27,13 +29,13 @@ export default function UserCommuTrainerListItem({trainerId, trainerName, gymNam
     axios.get(`${BASE_URL}/trainers/${trainerId}/thumbnail`).then((res)=>{
       setTrainerImg(res.data[0].thumbnail)
     }).catch((err)=>console.log(err))
-  }, [])
+  }, [ratingUpdate])
   
 
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId})}>
+      onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId, ratingUpdate: ratingUpdate, setRatingUpdate: setRatingUpdate})}>
       <Image
         style={styles.image}
         source={{uri: `data:image/png;base64,${trainerImg}`}}

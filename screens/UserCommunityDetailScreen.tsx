@@ -30,8 +30,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function UserCommunityDetailScreen({route}: RootStackScreenProps<'UserCommunityDetail'>) {
 
   const trainerId = route.params.trainerId
+  const ratingUpdate = route.params.ratingUpdate
+  const setRatingUpdate = route.params.setRatingUpdate
+
+  const [hasTrainer, setHasTrainer] = useState(1)
   const [isMyTrainer, setIsMyTrainer] = useState(0)
-  const [isReviewWrote, setIsReviewWrote] = useState(0)
+  const [isReviewWrote, setIsReviewWrote] = useState(1)
   const [trainerImg, setTrainerImg] = useState("https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.blog.daum.net%2Fdiable.666%2F317%3Fnp_nil_b%3D2&psig=AOvVaw3b8jjeV4Miq-OtOXsATdYf&ust=1642948340989000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCKCp4tPJxfUCFQAAAAAdAAAAABAI");
   const [trainerName, setTrainerName] = useState("")
   const [trainerAge, setTrainerAge] = useState(0)
@@ -39,11 +43,14 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
   const [trainerIntro, setTrainerIntro] = useState("")
   const [trainerRating, setTrainerRating] = useState(0)
   const [trainerReview, setTrainerReview] = useState<Array<any>>([])
+  const [trainerImages, setTrainerImages] = useState<Array<any>>([])
 
-  const trainderImgData = [
-    {id:1, src: trainerImg},
-    {id:2, src: "icon.png"}
-  ]
+  const [ratingUpdate2, setRatingUpdate2] = useState(0);
+
+  // const trainderImgData = [
+  //   {id:1, src: trainerImg},
+  //   {id:2, src: "icon.png"}
+  // ]
   // const trainerReviewData = [
   //   {id: 1, score:5, text:"친절하고 좋아요~"},
   //   {id: 2, score:2, text:"운동을 너무 빡세게 시켜요 ㅠ"},
@@ -73,6 +80,8 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
       const userId = await AsyncStorage.getItem('Id')
       if (userId != null) {
         axios.get(`${BASE_URL}/users/${userId}/trainer/${trainerId}`).then((res) => {
+          console.log(res.data.result[0])
+          setHasTrainer(res.data.result[0].hasTrainer)
           setIsMyTrainer(res.data.result[0].isMyTrainer)
           setIsReviewWrote(res.data.result[0].isReviewWrote)
         }).catch((err) => console.log(err))
@@ -82,7 +91,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
 
   useEffect(() => {
     getIdandUpdate()
-  }, [])
+  }, [ratingUpdate])
 
 
   React.useEffect(() => {   // todo : 트레이너 누를 때마다 애니메이션 작동 되게 해야함.
@@ -135,6 +144,18 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
 
     // input = 4.5
 
+    axios.get(`${BASE_URL}/images/trainer/${trainerId}`).then((res)=>{
+      setTrainerImages(
+        res.data.result.map((obj)=>{
+          return {
+            id: obj.id,
+            trainerId: obj.trainer_id,
+            src: obj.image
+          }
+        })
+      )
+    }).catch((err)=>console.log(err))
+
     axios.get(`${BASE_URL}/review/${trainerId}`).then((res)=>{
       setTrainerReview(
         res.data.result.map((item)=>{
@@ -145,13 +166,15 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
           }
         })
       )
+      setIsReviewWrote(1)
     }).catch((err)=>console.log(err))
     
-  }, [])
+  }, [ratingUpdate2])
 
   React.useEffect(()=>{
     setPercentage(trainerRating*20)
-  }, [trainerRating])
+    setRatingUpdate(ratingUpdate+1)
+  }, [trainerRating, ratingUpdate2])
 
   React.useEffect(() => {
     if (percentage == 0) {
@@ -198,6 +221,9 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
     <View style={styles.container}>
       <View style={styles.rowTitleBox}>
         <Text style={styles.title}>{trainerName} 트레이너</Text>
+        {hasTrainer ?
+            <></>
+          :
         <TouchableOpacity
           style={styles.btnRequest}
           onPress={()=>navigation.navigate('UserApply', {trainerId: trainerId})}
@@ -205,6 +231,8 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
           <Text style={styles.btnTxt}>신청하기</Text>
           {/* todo : 신청하기 버튼을 space-btw 하는 법? */}
         </TouchableOpacity>
+        }
+        
       </View>
       
       <View style={styles.separator}></View>
@@ -266,7 +294,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
             style={styles.imgFlatList}
             horizontal={true}
             keyExtractor={item => String(item.id)}
-            data = {trainderImgData}
+            data = {trainerImages}
             renderItem={({item}) => <TrainerImgListItem src={item.src}/>}
           />
           <View style={styles.reviewTitleBox}>
@@ -275,13 +303,16 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
             <TouchableOpacity>
               {/* 로그인한 유저의 (현재 혹은 과거) 트레이너가 맞는지 확인 */}
               <Text style={styles.reviewWriteTxt}
-                onPress={()=>navigation.navigate('UserPostReview', {trainerId: trainerId, trainerName: trainerName})}
+                onPress={()=>navigation.navigate('UserPostReview', {trainerId: trainerId, trainerName: trainerName, ratingUpdate: ratingUpdate2, setRatingUpdate: setRatingUpdate2})}
               >한줄평 쓰기
               </Text>
             </TouchableOpacity>
             :<></>}
           </View>
           <View style={styles.reviewContainer}>
+            {trainerReview.length == 0 ?
+            <Text>한줄평을 작성해보세요!</Text>
+            :
             <FlatList
               contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
               showsVerticalScrollIndicator={false}
@@ -289,6 +320,8 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
               data = {trainerReview}
               renderItem={({item}) =><TrainerReviewListItem text={item.content} score={item.rating}/>}
             />
+            }
+            
           </View>
         </>
       </ScrollView>

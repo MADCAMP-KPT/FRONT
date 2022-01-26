@@ -12,8 +12,10 @@ export default function UserPostReviewScreen({route}: RootStackScreenProps<'User
   
   const trainerId = route.params.trainerId
   const trainerName = route.params.trainerName
+  const setRatingUpdate = route.params.setRatingUpdate
+  const ratingUpdate = route.params.ratingUpdate
 
-  const [trainerRating, setTrainerRating] = useState(0);
+  const [trainerRating, setTrainerRating] = useState(5);
   const [review, setReview] = useState("");
   const [userId, setUserId] = useState(0);
 
@@ -40,6 +42,8 @@ export default function UserPostReviewScreen({route}: RootStackScreenProps<'User
       "rating": trainerRating
     }).then((res)=>console.log(res))
     .catch((err)=>console.log(err))
+
+    setRatingUpdate(ratingUpdate+1)
   }
 
   return (
