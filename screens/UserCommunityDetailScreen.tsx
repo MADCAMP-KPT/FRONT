@@ -11,6 +11,7 @@ import { Buffer } from 'buffer';
 import { useNavigation } from '@react-navigation/native';
 import BASE_URL from '../components/BASE_URL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as WebBrowser from 'expo-web-browser';
 
 
 // function TrainerImgListItem(src: String) {
@@ -42,6 +43,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
   const [trainerAge, setTrainerAge] = useState(0)
   const [trainerCareer, setTrainerCareer] = useState("")
   const [trainerIntro, setTrainerIntro] = useState("")
+  const [instagram, setInst] = useState("")
   const [trainerRating, setTrainerRating] = useState(0)
   const [trainerReview, setTrainerReview] = useState<Array<any>>([])
   const [trainerImages, setTrainerImages] = useState<Array<any>>([])
@@ -104,6 +106,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
         setTrainerCareer(res.data.result[0].career)
         setTrainerIntro(res.data.result[0].intro)
         setTrainerRating(res.data.result[0].rating)
+        setInst(res.data.result[0].instagram)
       }).catch((err)=>{
         console.log(err)
       })
@@ -288,6 +291,13 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
             <View style={styles.infoRowContainer}>
               <Text style={styles.infoTitle}>운동 경력</Text>
               <Text style={styles.infoTxt}>{trainerCareer}</Text>
+            </View>
+            <View style={styles.infoRowContainer}>
+              <Text style={styles.infoTitle}>인스타그램</Text>
+              <TouchableOpacity onPress={() => 
+              WebBrowser.openBrowserAsync(`https://instagram.com/${instagram}`)}>
+              <Text style={{color:'blue', fontSize: 16}}>@{instagram}</Text>
+            </TouchableOpacity>
             </View>
           </View>
           <Text style={styles.reviewTitleTxt}>트레이너 사진</Text>
