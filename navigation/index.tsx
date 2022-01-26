@@ -4,6 +4,7 @@
  *
  */
 import { FontAwesome } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons'; 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -137,7 +138,7 @@ function UserBottomTabNavigator() {
         name="UserTabOne"
         component={UserCommunityScreen}
         options={({ navigation }: UserTabScreenProps<'UserTabOne'>) => ({
-          title: 'Timetable',
+          title: '커뮤니티',
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         })}
@@ -147,8 +148,8 @@ function UserBottomTabNavigator() {
         component={GalleryTopTabNavigator}
         options={{
           headerShown: false,
-          title: '회원관리',
-          tabBarIcon: ({ color }) => <Feather name="users" size={24} color={color} />,
+          title: '운동 기록',
+          tabBarIcon: ({ color }) => <Foundation name="photo" size={24} color={color} />,
         }}
       />
       <UserBottomTab.Screen
