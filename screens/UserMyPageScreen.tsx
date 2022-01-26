@@ -146,11 +146,14 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.rowContainer}>
-        <Text style={styles.title}>{userName} 회원님</Text>
-        {userSex == 'M'
-          ? <Ionicons name="male" size={28} color="skyblue" />
-          : <Ionicons name="female" size={28} color="pink" />}
+      <View style={[styles.rowContainer, {justifyContent: 'space-between', paddingHorizontal: 10}]}>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.title}>{userName} 회원님</Text>
+          {userSex == 'M'
+            ? <Ionicons name="male" size={28} color="skyblue" />
+            : <Ionicons name="female" size={28} color="pink" />}
+        </View>
+        
         {edit? 
         <TouchableOpacity style={{justifyContent: 'flex-end', backgroundColor: 'skyblue', borderRadius: 10, padding: 10}} onPress={() => {
           axios.put(`${BASE_URL}/users/${id}`, {"contact": userContact, "career": userCareer, "purpose": userPurpose})
@@ -168,7 +171,7 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
         }
       </View>
       <View style={styles.separator}/>
-      <ScrollView style={{width: '100%'}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{width: '100%'}}>
         {edit?
         <View style={styles.infoContainer}>
         <View style={styles.rowContainer}>
@@ -376,10 +379,10 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    alignSelf: 'flex-start',
+    // alignSelf: 'flex-start',
     marginHorizontal: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    width: '100%'
   },
   memoList: {
     flex: 5,
@@ -453,8 +456,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   users: {
-    fontSize: 25,
-    margin: 5 
+    fontSize: 20,
+    margin: 5,
+    fontWeight: '500'
   },
   box: {
     alignItems: 'center',
@@ -462,6 +466,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 3,
     borderColor: 'white',
+    width: '80%',
+    alignSelf: 'center',
     margin: 10,
     padding: 10,
     backgroundColor: 'lightblue'

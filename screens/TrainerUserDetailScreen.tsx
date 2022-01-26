@@ -126,16 +126,20 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
           : <Ionicons name="female" size={28} color="pink" />}
       </View>
       <View style={styles.infoContainer}>
-        <View style={styles.infoInnerBox}>
+        <View style={styles.rowContainer}>
           <Text style={styles.infoTxtTitle}>나이</Text>
-          <Text style={styles.infoTxtTitle}>연락처</Text>
-          <Text style={styles.infoTxtTitle}>운동 경력</Text>
-          <Text style={styles.infoTxtTitle}>운동 목적</Text>
+          <Text style={styles.infoTxt}>{userAge}세</Text>
         </View>
-        <View style={styles.infoInnerBox}>
-          <Text style={styles.infoTxt}>{userAge}</Text>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>연락처</Text>
           <Text style={styles.infoTxt}>{userContact}</Text>
+        </View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>운동 경력</Text>
           <Text style={styles.infoTxt}>{userCareer}</Text>
+        </View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoTxtTitle}>운동 목적</Text>
           <Text style={styles.infoTxt}>{userPurpose}</Text>
         </View>
       </View>
@@ -214,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8
+    padding: 16
   },
   title: {
     fontSize: 32,
@@ -227,11 +231,13 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   infoContainer: {
-    flex: 3,
-    flexDirection: 'row',
+    flex: 2,
+    flexDirection: 'column',
     alignSelf: 'stretch',
+    justifyContent: 'center',
+    padding: 16,
     backgroundColor: '#dddddd',
-    marginVertical: 20,
+    marginVertical: 10,
     marginHorizontal: 10,
     borderRadius: 20
   },
@@ -251,12 +257,17 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   rowContainer: {
-    flex: 1,
+    // flex: 1,
+    // flexDirection: 'row',
+    // alignSelf: 'flex-start',
+    // marginHorizontal: 10,
+    // alignItems: 'center',
+    // justifyContent: 'center'
     flexDirection: 'row',
-    alignSelf: 'flex-start',
+    // alignSelf: 'flex-start',
     marginHorizontal: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    width: '100%'
   },
   memoList: {
     flex: 5,
@@ -301,7 +312,7 @@ const styles = StyleSheet.create({
   summitBtn: {
     width: 100,
     height: 40,
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'lightblue',
     borderRadius: 20,
     padding: 0,
     alignItems: 'center',

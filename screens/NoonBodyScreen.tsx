@@ -13,6 +13,7 @@ export default function NoonBodyScreen() {
   const [pickedImagePath, setPickedImagePath] = useState('');
   const [arr, setArr] = useState<Array<Array<string>>>([])
   const [id, setId] = useState('')
+  const [userName, setUserName] = useState("")
 
   useEffect( () => {
     getIdandUpdate()
@@ -33,6 +34,10 @@ export default function NoonBodyScreen() {
           })
           setArr([...temp])
         })
+
+        axios.get(`${BASE_URL}/users/${value}`).then((res)=>{
+          setUserName(res.data.result[0].name)
+        }).catch((err)=>console.log(err))
       }
     } catch(e) {
       console.log(e);
@@ -92,9 +97,9 @@ export default function NoonBodyScreen() {
   return(
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <View style={{flexDirection: 'row'}}>
-        <Text style={{fontSize: 32, fontWeight: 'bold', textAlign: 'center', margin: 20}}>김기영의 눈바디 갤러리</Text>
+        <Text style={{fontSize: 24, fontWeight: '600', textAlign: 'center', margin: 16}}>{userName} 회원님의 눈바디 갤러리</Text>
         <TouchableOpacity style={{alignSelf: 'center'}} onPress={showImagePicker}>
-          <AntDesign name="pluscircle" size={48} color="black" />
+          <AntDesign name="pluscircle" size={32} color="skyblue" />
         </TouchableOpacity>
       </View>
       <ScrollView>

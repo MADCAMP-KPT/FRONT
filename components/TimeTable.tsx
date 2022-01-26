@@ -39,7 +39,7 @@ export default function TimeTable({teach}: {teach: {day: string, hour: number, u
 
   // Private component for already reservated cells. You can add any styles, or any jsx elements inside.
   const view = (userName: string, day: string, time: number, classId: number, rem: number, userId: number) => (
-      <TouchableOpacity style={{flex: 1, backgroundColor: 'pink', alignItems: 'center', justifyContent: 'center'}}
+      <TouchableOpacity style={{flex: 1, backgroundColor: 'lightblue', alignItems: 'center', justifyContent: 'center'}}
       onPress={() => navigation.navigate('UserDetail', {classId: classId, userId: userId, day: day, time: time, remainingPT: rem})}
       >
         <View>
