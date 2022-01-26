@@ -64,3 +64,8 @@
 |<img src="https://user-images.githubusercontent.com/50014431/151123552-1775c783-6bbb-429e-99d8-35a37909f47a.gif" width="300">|
 - 트레이너의 정보를 확인하고 수정할 수 있습니다.
 - 회원들이 볼 수 있는 트레이너의 사진을 업로드하고 관리할 수 있습니다.
+
+## CREDITS
+- 박승민 (<a href="https://github.com/smpak19">smpak19</a>): smpak@kaist.ac.kr
+- 김기영 (<a href="https://github.com/ddungiii">ddungiii</a>): ggcc503@kaist.ac.kr
+- 김민희 (<a href="https://github.com/minizzang">minizzang</a>): minizzang@kaist.ac.kr
