@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { useState, Component, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, FlatList, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import Svg, {G, Circle} from 'react-native-svg';
 import TrainerReviewListItem from '../components/TrainerReviewListItem';
 import TrainerImgListItem from '../components/TrainerImgListItem';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackScreenProps } from '../types';
 import axios from 'axios';
 import { Buffer } from 'buffer';
@@ -218,7 +219,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
   const navigation = useNavigation()
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.rowTitleBox}>
         <Text style={styles.title}>{trainerName} 트레이너</Text>
         {hasTrainer ?
@@ -325,7 +326,7 @@ export default function UserCommunityDetailScreen({route}: RootStackScreenProps<
           </View>
         </>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -338,7 +339,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingBottom: 0,
     marginHorizontal: 10,
-    marginTop: 24
   },
   scrollView: {
     width: '100%',

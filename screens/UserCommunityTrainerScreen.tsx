@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Picker, FlatList, TouchableOpacity } from "react-native";
 import DropdownMenu from "react-native-dropdown-menu";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackScreenProps } from '../types';
 import UserCommuTrainerListItem from "../components/UserCommuTrainerListItem";
 import axios from "axios";
@@ -46,7 +47,7 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
 
   
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.rowBox}>
         <Text style={styles.title}>{gymName}</Text>
         
@@ -61,7 +62,7 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
         data = {trainerList}
         renderItem={({item}) => <UserCommuTrainerListItem trainerId={item.trainerId} trainerName={item.trainerName} gymName={gymName} ratingUpdate={ratingUpdate} setRatingUpdate={setRatingUpdate}/>}
       />
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -72,7 +73,6 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     padding: 8,
     marginHorizontal: 10,
-    marginVertical: 24
   },
   rowBox: {
     flexDirection: 'row',

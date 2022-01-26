@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import GalleryList from "../components/GalleryList";
 import * as ImagePicker from 'expo-image-picker'
 import BASE_URL from "../components/BASE_URL";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from "axios";
 

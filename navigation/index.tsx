@@ -171,7 +171,7 @@ function GalleryTopTabNavigator() {
     <BodyTab.Navigator initialRouteName="InBody"
       screenOptions ={{
         tabBarLabelStyle: {fontSize: 15},
-        tabBarStyle: { height: 50, marginTop: 30 } // Iphone with notch will shadowing this tab 
+        tabBarStyle: { height: 50, marginTop: 40 } // Iphone with notch will shadowing this tab 
       }}
     >
       <BodyTab.Screen

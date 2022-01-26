@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Picker, FlatList, TouchableOpacity } from "react-native";
 import DropdownMenu from "react-native-dropdown-menu";
 import UserCommuGymListItem from "../components/UserCommuGymListItem";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import BASE_URL from '../components/BASE_URL';
 import axios from "axios";
 
@@ -51,7 +52,7 @@ export default function UserCommunityScreen() {
   }, [myRegion])
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.rowBox}>
         <Text style={styles.title}>KIM PT</Text>
         <View style={{width: 100, height: 10, transform: [{translateY: -10}, {translateX: -10}]}}>
@@ -93,7 +94,7 @@ export default function UserCommunityScreen() {
         data = {gymList}
         renderItem={({item}) => <UserCommuGymListItem gymId={item.gymId} gymName={item.gymName}/>}
       />
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -104,7 +105,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     padding: 8,
     marginHorizontal: 10,
-    marginVertical: 24
+    paddingBottom: 0
+    // marginVertical: 24
   },
   rowBox: {
     flexDirection: 'row',
