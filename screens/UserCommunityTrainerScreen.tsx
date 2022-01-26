@@ -18,6 +18,8 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
   const [gymName, setGymName] = useState("");
   const [trainerList, setTrainerList] = useState<Array<any>>([]);
 
+  const [ratingUpdate, setRatingUpdate] = useState(0);
+
   useEffect(()=> {
     axios.get(`${BASE_URL}/gyms/${gymId}`)
       .then((res)=>{
@@ -34,12 +36,13 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
               return {
                 trainerId: item.id,
                 trainerName: item.name,
+                rating: item.rating
               }
             })
           )
         }
       ).catch((err) => console.log(err))
-  }, [])
+  }, [ratingUpdate])
 
   
   return (
@@ -56,7 +59,7 @@ export default function UserCommunityTrainerScreen({route}: RootStackScreenProps
         columnWrapperStyle={styles.columnWrapper}
         keyExtractor={(item, index) => String(item.trainerId)}
         data = {trainerList}
-        renderItem={({item}) => <UserCommuTrainerListItem trainerId={item.trainerId} trainerName={item.trainerName} gymName={gymName}/>}
+        renderItem={({item}) => <UserCommuTrainerListItem trainerId={item.trainerId} trainerName={item.trainerName} gymName={gymName} ratingUpdate={ratingUpdate} setRatingUpdate={setRatingUpdate}/>}
       />
     </View>
   )

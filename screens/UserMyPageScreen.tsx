@@ -33,15 +33,16 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
   const [trainerInsta, setTrainerInsta] = useState("")
   const [trainerImage, setTrainerImage] = useState("https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif")
 
+  const [ratingUpdate, setRatingUpdate] = useState(0)
   const [memoHistory, setMemoHistory] = useState<Array<any>>([])
 
-  const memoData = [
-    {id: 1, date:"1월 4일", text:"냠냠"},
-    {id: 2, date:"1월 8일", text:"스쿼트"},
-    {id: 3, date:"1월 9일", text:"굿"},
-    {id: 4, date:"1월 20일", text:"레그레이즈"},
-    {id: 5, date:"1월 29일", text:"메롱"},
-  ];
+  // const memoData = [
+  //   {id: 1, date:"1월 4일", text:"냠냠"},
+  //   {id: 2, date:"1월 8일", text:"스쿼트"},
+  //   {id: 3, date:"1월 9일", text:"굿"},
+  //   {id: 4, date:"1월 20일", text:"레그레이즈"},
+  //   {id: 5, date:"1월 29일", text:"메롱"},
+  // ];
 
   const getIdandUpdate = async () => {
     try {
@@ -80,6 +81,21 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
             }
           })
         }).catch((err) => console.log(err))
+
+        axios.get(`${BASE_URL}/memo/${userId}`).then((res)=>{
+          // console.log(res.data.result)
+          setMemoHistory(
+            res.data.result.map((item)=>{
+              return {
+                id: item.id,
+                date: item.date,
+                text: item.content
+              }
+            })
+          )
+        })
+
+
       } else {
         console.log("hi")
       }
@@ -195,7 +211,7 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
             <Text style={styles.infoTxtTitle}>나의 트레이너</Text>
           </View>
           <TouchableOpacity style={styles.trainerContainer}
-            onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId})}>
+            onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId, ratingUpdate: ratingUpdate, setRatingUpdate: setRatingUpdate})}>
             <Image
               style={styles.trainerImg}
               source={{uri: `data:image/png;base64,${trainerImage}`}}
@@ -228,9 +244,9 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
           <View style={styles.memoList}>
             <FlatList
               keyExtractor={item => String(item.id)}
-              data = {memoData}
+              data = {memoHistory}
               horizontal = {true}
-              renderItem={({item}) => <PTMemoItem date={item.date} text={item.text}/>}
+              renderItem={({item}) => <PTMemoItem date={String(item.date).substr(0,10)} text={item.text}/>}
             />
           </View>
 
@@ -244,7 +260,7 @@ export default function UserMyPageScreen({navigation}: UserTabScreenProps<'UserT
             </View>
           </View>
           <TouchableOpacity style={styles.trainerContainer}
-            onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId})}>
+            onPress={()=>navigation.navigate('UserCommunityDetail', {trainerId: trainerId, ratingUpdate: ratingUpdate, setRatingUpdate: setRatingUpdate})}>
             <Image
               style={styles.trainerImg}
               source={{uri: `data:image/png;base64,${trainerImage}`}}

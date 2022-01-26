@@ -20,7 +20,7 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
   const userId = route.params.userId
   const day = route.params.day
   const time = route.params.time
-  const remainingPT = route.params.remainingPT
+  // const remainingPT = route.params.remainingPT
 
   const [userName, setUserName] = useState("")
   const [userSex, setUserSex] = useState("")
@@ -29,6 +29,7 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
   const [userCareer, setUserCareer] = useState("")
   const [userPurpose, setUserPurpose] = useState("")
   const [KoreanDay, setKoreanDay] = useState("")
+  const [remainingPT, setRemainingPT] = useState(0)
   
   const [modalOpen, setModalOpen] = useState(false)
   const [dateModalOpen, setDateModalOpen] = useState(false)
@@ -37,19 +38,19 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
   let date = String(timeNow.getFullYear())+"-"+String(timeNow.getMonth()+1)+"-"+String(timeNow.getDate());
 
   const [memo, setMemo] = useState("")
+  const [memoUpdate, setMemoUpdate] = useState(0)
   const [memoHistory, setMemoHistory] = useState<Array<any>>([])
   const [selectedDay, setSelectedDay] = useState(date)
-
  
   // setSelectedDay()
 
-  const memoData = [
-    {id: 1, date:"1월 4일", text:"냠냠"},
-    {id: 2, date:"1월 8일", text:"스쿼트"},
-    {id: 3, date:"1월 9일", text:"굿"},
-    {id: 4, date:"1월 20일", text:"레그레이즈"},
-    {id: 5, date:"1월 29일", text:"메롱"},
-  ];
+  // const memoData = [
+  //   {id: 1, date:"1월 4일", text:"냠냠"},
+  //   {id: 2, date:"1월 8일", text:"스쿼트"},
+  //   {id: 3, date:"1월 9일", text:"굿"},
+  //   {id: 4, date:"1월 20일", text:"레그레이즈"},
+  //   {id: 5, date:"1월 29일", text:"메롱"},
+  // ];
 
   const parseDate = (date: String)=>{
     // date : "2022-9-25"
@@ -60,9 +61,10 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
   const postMemo = () => {
     axios.post(`${BASE_URL}/memo`, {
       "user_id": userId,
-      "date": "2022-01-24", 
-      "content": "잘했어용"
+      "date": selectedDay, 
+      "content": memo
     })
+    setMemoUpdate(memoUpdate+1)
   }
 
   useEffect(()=>{
@@ -77,9 +79,24 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
 
     }).catch((err)=>{console.log(err)})
 
-    // axios.get(`${BASE_URL}/memo/${classId}`).then((res)=>{
-    //   console.log(res.data.result)
-    // })
+    axios.get(`${BASE_URL}/memo/${userId}`).then((res)=>{
+      console.log(res.data.result)
+      setMemoHistory(
+        res.data.result.map((item)=>{
+          return {
+            id: item.id,
+            date: item.date,
+            text: item.content
+          }
+        })
+      )
+    })
+
+    axios.get(`${BASE_URL}/users/${userId}/class`).then((res)=>{
+      setRemainingPT(res.data.result[0].remaining_pt)
+    }).catch((err)=> {
+      console.log(err)
+    })
 
     switch (day) {
       case ("mon"):
@@ -98,7 +115,7 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
         setKoreanDay("금")
         break
     }
-  }, [])
+  }, [memoUpdate])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -156,7 +173,10 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
               onChangeText={(text)=>setMemo(text)}
               multiline={true}/>
             <TouchableOpacity
-              onPress={()=>setModalOpen(false)}
+              onPress={()=>{
+                setModalOpen(false)
+                postMemo()
+              }}
               style={styles.summitBtn}>
               <Text style={styles.summitTxt}>저장하기</Text>
             </TouchableOpacity>
@@ -178,9 +198,9 @@ export default function TabTwoScreen({route}: RootStackScreenProps<'UserDetail'>
       <View style={styles.memoList}>
         <FlatList
           keyExtractor={item => String(item.id)}
-          data = {memoData}
+          data = {memoHistory}
           horizontal = {true}
-          renderItem={({item}) => <PTMemoItem date={item.date} text={item.text}/>}
+          renderItem={({item}) => <PTMemoItem date={String(item.date).substr(0,10)} text={item.text}/>}
         />
       </View>
       

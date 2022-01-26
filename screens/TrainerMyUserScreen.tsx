@@ -42,6 +42,7 @@ export default function TrainerMyUserScreen() {
                 userName: item.name,
                 reqDay: item.day,
                 reqTime: item.time,
+                remainingPt: item.remaining_pt
               }
             })
           )
@@ -86,7 +87,14 @@ export default function TrainerMyUserScreen() {
         <FlatList
           keyExtractor={item => String(item.userId)}
           data = {pendingList}
-          renderItem={({item}) => <UserReqListItem userName={item.userName}/>}
+          renderItem={({item}) =>
+            <UserReqListItem
+              userName={item.userName}
+              classId={item.classId}
+              pendingList={pendingList}
+              setPendingList={setPendingList}
+              setTeachingList={setTeachingList}
+              teachingList={teachingList}/>}
         />
       </View>
       <View style={styles.emptyView}></View>
